@@ -1,0 +1,44 @@
+#visualization{
+    max-width: 100vw;
+    max-height: 100vh;
+    width: 100vw;
+    height: 100vw;
+    /* background-color: aqua; */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+#resizable{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    /* background-color: peachpuff; */
+}
+
+#left{
+    width: 25%;
+    height: 100vh;
+    /* background-color: rebeccapurple; */
+}
+
+#middle{
+    height: 100vh;
+    width: 75%;
+    /* background-color: palevioletred; */
+}
+
+#right{
+    width: fit-content;
+    height: 100vh;
+    /* background-color: palegreen; */
+    display: flex;
+    overflow: hidden;
+}
+#right img{
+    max-width: 100%;
+    height: 100vh;
+    width: auto\9; /* ie8 */
+    opacity: 0.5;
+}
