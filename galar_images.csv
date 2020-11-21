@@ -1,3 +1,4 @@
+NAME, IMAGE-URL
 Nickit, https://cdn.bulbagarden.net/upload/2/22/827Nickit.png
 Rookidee, https://cdn.bulbagarden.net/upload/7/79/821Rookidee.png
 Skwovet, https://cdn.bulbagarden.net/upload/c/ce/819Skwovet.png
@@ -8,7 +9,7 @@ Grubbin, https://cdn.bulbagarden.net/upload/thumb/1/14/736Grubbin.png/250px-736G
 Hoothoot, https://img.pokemondb.net/artwork/large/hoothoot.jpg
 Chewtle, https://cdn.bulbagarden.net/upload/thumb/2/22/833Chewtle.png/250px-833Chewtle.png
 Yamper, https://cdn.bulbagarden.net/upload/thumb/6/63/835Yamper.png/1200px-835Yamper.png
-Zigzagoon, https://cdn.bulbagarden.net/upload/thumb/4/47/263Zigzagoon.png/1200px-263Zigzagoon.png
+Zigzagoon, https://oyster.ignimgs.com/mediawiki/apis.ign.com/pokemon-switch/b/bb/GalarianZigzagoon.jpg
 Arrokuda, https://cdn.bulbagarden.net/upload/a/a9/846Arrokuda.png
 Magikarp, https://cdn.bulbagarden.net/upload/thumb/0/02/129Magikarp.png/250px-129Magikarp.png
 Lotad, https://cdn.bulbagarden.net/upload/e/ee/270Lotad.png
@@ -44,7 +45,7 @@ Vanillite, https://cdn.bulbagarden.net/upload/thumb/3/3f/582Vanillite.png/1200px
 Electrike, https://cdn.bulbagarden.net/upload/thumb/4/47/309Electrike.png/250px-309Electrike.png
 Joltik, https://cdn.bulbagarden.net/upload/thumb/f/f8/595Joltik.png/1200px-595Joltik.png
 Eevee,https://cdn.bulbagarden.net/upload/thumb/e/e2/133Eevee.png/250px-133Eevee.png
-Meowth, https://cdn.bulbagarden.net/upload/thumb/d/d6/052Meowth.png/1200px-052Meowth.png
+Meowth, https://www.serebii.net/pokemon/art/052-g.png
 Pikachu, https://images-na.ssl-images-amazon.com/images/I/61iWqqcq%2BKL._AC_SL1500_.jpg
 Pumpkaboo, https://cdn.bulbagarden.net/upload/d/df/710Pumpkaboo.png
 Goldeen, https://cdn.bulbagarden.net/upload/7/7b/118Goldeen.png
@@ -52,7 +53,7 @@ Cutiefly, https://img.pokemondb.net/artwork/large/cutiefly.jpg
 Ferroseed, https://cdn.bulbagarden.net/upload/thumb/2/28/597Ferroseed.png/1200px-597Ferroseed.png
 Milcery, https://cdn.bulbagarden.net/upload/0/05/868Milcery.png
 Drifloon, https://cdn.bulbagarden.net/upload/e/eb/425Drifloon.png
-Farfetch'd, https://cdn.bulbagarden.net/upload/thumb/f/f8/083Farfetch%27d.png/250px-083Farfetch%27d.png
+Farfetch'd, https://www.serebii.net/pokemon/art/083-g.png
 Minccino, https://cdn.bulbagarden.net/upload/thumb/e/ec/572Minccino.png/1200px-572Minccino.png
 Spritzee, https://cdn.bulbagarden.net/upload/thumb/6/66/682Spritzee.png/1200px-682Spritzee.png
 Swirlix, https://img.pokemondb.net/artwork/large/swirlix.jpg
@@ -67,7 +68,7 @@ Dugtrio, https://img.pokemondb.net/artwork/large/dugtrio.jpg
 Helioptile, https://cdn.bulbagarden.net/upload/thumb/5/51/694Helioptile.png/250px-694Helioptile.png
 Maractus, https://cdn.bulbagarden.net/upload/thumb/3/35/556Maractus.png/250px-556Maractus.png
 Trapinch, https://cdn.bulbagarden.net/upload/7/76/328Trapinch.png
-Yamask, https://cdn.bulbagarden.net/upload/thumb/a/a4/562Yamask.png/1200px-562Yamask.png
+Yamask, https://www.serebii.net/pokemon/art/562-g.png
 Drednaw, https://cdn.bulbagarden.net/upload/thumb/b/be/834Drednaw.png/1200px-834Drednaw.png
 Greedent, https://cdn.bulbagarden.net/upload/6/6b/820Greedent.png
 Durant, https://cdn.bulbagarden.net/upload/1/1a/632Durant.png
@@ -85,8 +86,8 @@ Perrserker, https://cdn.bulbagarden.net/upload/e/e0/863Perrserker.png
 Thievul, https://cdn.bulbagarden.net/upload/e/e7/828Thievul.png
 Corviknight, https://img.pokemondb.net/artwork/large/corviknight.jpg
 Karrablast, https://cdn.bulbagarden.net/upload/thumb/6/60/588Karrablast.png/1200px-588Karrablast.png
-Meowstic M, https://img.pokemondb.net/artwork/large/meowstic-male.jpg
-Meowstic F, https://img.pokemondb.net/artwork/large/meowstic-female.jpg
+Meowstic M, https://img.pokemondb.net/artwork/large/meowstic-male.jpg
+Meowstic F, https://img.pokemondb.net/artwork/large/meowstic-female.jpg
 Seismitoad, https://img.pokemondb.net/artwork/large/seismitoad.jpg
 Shelmet, https://img.pokemondb.net/artwork/large/shelmet.jpg
 Toxel, https://cdn.bulbagarden.net/upload/d/d5/848Toxel.png
@@ -98,186 +99,186 @@ Rufflet, https://cdn.bulbagarden.net/upload/thumb/b/bb/627Rufflet.png/250px-627R
 Solrock, https://cdn.bulbagarden.net/upload/9/90/338Solrock.png
 Togedemaru, https://img.pokemondb.net/artwork/large/togedemaru.jpg
 Vullaby, https://cdn.bulbagarden.net/upload/f/f2/629Vullaby.png
-Bronzong
-Drapion
-Falinks
-Haunter
-Hippowdon
-Rhyhorn
-Sandaconda
-Gastrodon
-Jellicent
-Mareanie
-Pelipper
-Pyukumuku
-Octillery
-Wishiwashi
-Mantyke
-Qwilfish
-Cramorant
-Kingler
-Pincurchin
-Cubchoo
-Duraludon
-Mr. Mime
-Sneasel
-Abomasnow
-Beartic
-Darumaka
-Eiscue
-Snom
-Stonjourner
-Vanillish
-Gyarados
-Bewear
-Claydol
-Drifblim
-Diggersby
-Munna
-Unfezant
-Crustle
-Mudsdale
-Steenee
-Gloom
-Machoke
-Roselia
-Crawdaunt
-Charjabug
-Manectric
-Lanturn
-Elgyem
-Noibat
-Woobat
-Litwick
-Palpitoad
-Togepi
-Cufant
-Carkol
-Tranquill
-Shellos
-Barraskewda
-Duosion
-Gothorita
-Sableye
-Braviary
-Mandibuzz
-Togekiss
-Eldegoss
-Gardevoir
-Hattrem
-Drilbur
-Growlithe
-Coalossal
-Stunfisk
-Croagunk
-Koffing
-Scraggy
-Dubwool
-Hitmonchan
-Hitmonlee
-Barbaracle
-Shuckle
-Sudowoodo
-Piloswine
-Mawile
-Ferrothorn
-Boltund
-Shellder
-Butterfree
-Pidove
-Frillish
-Wingull
-Onix
-Dwebble
-Chinchou
-Diglett
-Roggenrola
-Timburr
-Binacle
-Wimpod
-Barboach
-Corphish
-Krabby
-Clefairy
-Gothita
-Linoone
-Noctowl
-Solosis
-Rhydon
-Quagsire
-Riolu
-Morelull
-Natu
-Impidimp
-Mimikyu
-Excadrill
-Corsola
-Sawk
-Throh
-Cloyster
-Gastly
-Bronzor
-Xatu
-Wooper
-Swinub
-Indeedee M
-Indeedee F
-Morgrem
-Oranguru
-Passimian
-Phantump
-Ponyta
-Shiinotic
-Sinistea
-Honedge
-Hawlucha
-Basculin
-Ditto
-Drakloak
-Golurk
-Gothitelle
-Hatterene
-Reuniclus
-Mantine
-Dreepy
-Arcanine
-Flygon
-Lampent
-Ninetales
-Jangmo-o
-Larvitar
-Turtonator
-Beheeyem
-Sigilyph
-Obstagoon
-Orbeetle
-Garbodor
-Hitmontop
-Weezing
-Pangoro
-Araquanid
-Golisopod
-Rotom
-Deino
-Goomy
-Pupitar
-Zweilous
-Bergmite
-Glalie
-Vanilluxe
-Bisharp
-Copperajah
-Klinklang
-Doublade
-Haxorus
-Noivern
-Drampa
-Sliggoo
-Metapod
-Combee
-Salandit
-Ninjask
-Ribombee
-Cottonee
-Bonsly
-Remoraid
+Bronzong,
+Drapion,
+Falinks,
+Haunter,
+Hippowdon,
+Rhyhorn,
+Sandaconda,
+Gastrodon,
+Jellicent,
+Mareanie,
+Pelipper,
+Pyukumuku,
+Octillery,
+Wishiwashi,
+Mantyke,
+Qwilfish,
+Cramorant,
+Kingler,
+Pincurchin,
+Cubchoo,
+Duraludon,
+Mr. Mime, https://www.serebii.net/pokemon/art/122-g.png
+Sneasel,
+Abomasnow,
+Beartic,
+Darumaka,https://img.pokemondb.net/artwork/large/darumaka-galarian.jpg
+Eiscue,
+Snom,
+Stonjourner,
+Vanillish,
+Gyarados,
+Bewear,
+Claydol,
+Drifblim,
+Diggersby,
+Munna,
+Unfezant,
+Crustle,
+Mudsdale,
+Steenee,
+Gloom,
+Machoke,
+Roselia,
+Crawdaunt,
+Charjabug,
+Manectric,
+Lanturn,
+Elgyem,
+Noibat,
+Woobat,
+Litwick,
+Palpitoad,
+Togepi,
+Cufant,
+Carkol,
+Tranquill,
+Shellos,
+Barraskewda,
+Duosion,
+Gothorita,
+Sableye,
+Braviary,
+Mandibuzz,
+Togekiss,
+Eldegoss,
+Gardevoir,
+Hattrem,
+Drilbur,
+Growlithe,
+Coalossal,
+Stunfisk,https://gamepress.gg/pokemongo/sites/pokemongo/files/2020-04/618_f2.png
+Croagunk,
+Koffing,
+Scraggy,
+Dubwool,
+Hitmonchan,
+Hitmonlee,
+Barbaracle,
+Shuckle,
+Sudowoodo,
+Piloswine,
+Mawile,
+Ferrothorn,
+Boltund,
+Shellder,
+Butterfree,
+Pidove,
+Frillish,
+Wingull,
+Onix,
+Dwebble,
+Chinchou,
+Diglett,
+Roggenrola,
+Timburr,
+Binacle,
+Wimpod,
+Barboach,
+Corphish,
+Krabby,
+Clefairy,
+Gothita,
+Linoone,https://www.serebii.net/pokemon/art/264-g.png
+Noctowl,
+Solosis,
+Rhydon,
+Quagsire,
+Riolu,
+Morelull,
+Natu,
+Impidimp,
+Mimikyu,
+Excadrill,
+Corsola,https://www.serebii.net/pokemon/art/222-g.png
+Sawk,
+Throh,
+Cloyster,
+Gastly,
+Bronzor,
+Xatu,
+Wooper,
+Swinub,
+Indeedee M,
+Indeedee F,
+Morgrem,
+Oranguru,
+Passimian,
+Phantump,
+Ponyta, https://oyster.ignimgs.com/mediawiki/apis.ign.com/pokemon-switch/a/a7/GalarianPonyta.jpg
+Shiinotic,
+Sinistea,
+Honedge,
+Hawlucha,
+Basculin,
+Ditto,
+Drakloak,
+Golurk,
+Gothitelle,
+Hatterene,
+Reuniclus,
+Mantine,
+Dreepy,
+Arcanine,
+Flygon,
+Lampent,
+Ninetales,
+Jangmo-o,
+Larvitar,
+Turtonator,
+Beheeyem,
+Sigilyph,
+Obstagoon,
+Orbeetle,
+Garbodor,
+Hitmontop,
+Weezing, https://www.serebii.net/pokemon/art/110-g.png
+Pangoro,
+Araquanid,
+Golisopod,
+Rotom,
+Deino,
+Goomy,
+Pupitar,
+Zweilous,
+Bergmite,
+Glalie,
+Vanilluxe,
+Bisharp,
+Copperajah,
+Klinklang,
+Doublade,
+Haxorus,
+Noivern,
+Drampa,
+Sliggoo,
+Metapod,
+Combee,
+Salandit,
+Ninjask,
+Ribombee,
+Cottonee,
+Bonsly,
+Remoraid,
