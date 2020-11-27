@@ -20,7 +20,8 @@
 #left{
     width: 25%;
     height: 100vh;
-    /* background-color: rebeccapurple; */
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #middle{
@@ -41,4 +42,71 @@
     height: 100vh;
     width: auto\9; /* ie8 */
     opacity: 0.5;
+}
+
+.sortFilter{
+    padding: 1em;
+}
+
+.sortFilter h1{
+    font-family: 'Sansita Swashed', cursive;
+    text-align: center;
+    color: #3FB8AF;
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+.sortFilter input[type="text"]{
+    width: 97%;
+    height: 1.5em;
+    margin-right: .2em;
+    margin-top: .3em;
+    margin-bottom: 2em;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+.sortFilter select{
+    width: 100%;
+    height: 2em;
+    margin-top: .3em;
+    margin-bottom: 2em;
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+.sortFilter option{
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+.sortFilter label{
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+}
+
+#gen{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: .3em;
+    margin-bottom: 1.5em;
+    font-family: 'Raleway', sans-serif;
+}
+
+#HP{
+    padding-left: 1em;
+    padding-right: 1em;
+    margin-top: .5em;
+    margin-bottom: 4em;
+}
+
+.verticalCheckbox{
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+}
+
+.noUi-tooltip { 
+    bottom:-32px !important;
+    font-family: 'Raleway', sans-serif;
 }
