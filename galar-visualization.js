@@ -354,7 +354,10 @@ function renderRight() {
         .attr("width", rightWidth)
         .attr("height", rightHeight)
         .attr("style", "position: absolute;");
+    
 
+    //line used to draw locations
+    var lineGenerator = d3.line();
 
     //line used to draw locations
     var lineGenerator = d3.line();
