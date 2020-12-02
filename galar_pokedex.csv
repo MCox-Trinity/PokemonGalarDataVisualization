@@ -1,3 +1,4 @@
+NUMBER,CODE,SERIAL,NAME,TYPE1,TYPE2,COLOR,ABILITY1,ABILITY2,ABILITY HIDDEN,GENERATION,LEGENDARY,MEGA_EVOLUTION,HEIGHT,WEIGHT,HP,ATK,DEF,SP_ATK,SP_DEF,SPD,TOTAL
 10,1,101,Caterpie,Bug,,Green,Shield Dust,,Run Away,1,0,0,0.3,2.9,45,30,35,20,20,45,195
 11,1,111,Metapod,Bug,,Green,Shed Skin,,,1,0,0,0.7,9.9,50,20,55,25,25,30,205
 12,1,121,Butterfree,Bug,Flying,White,Compound Eyes,,Tinted Lens,1,0,0,1.1,32,60,45,50,90,80,70,395
@@ -280,3 +281,5 @@
 884,1,8841,Duraludon,Steel,Dragon,White,Light Metal,Heavy Metal,Stalwart,8,0,0,1.8,40,70,95,115,120,50,85,535
 885,1,8851,Dreepy,Dragon,Ghost,Green,Clear Body,Infiltrator,Cursed Body,8,0,0,0.5,2,28,60,30,40,30,82,270
 886,1,8861,Drakloak,Dragon,Ghost,Green,Clear Body,Infiltrator,Cursed Body,8,0,0,1.4,11,68,80,50,60,50,102,410
+823,023,8071,Corviknight,Flying,Steel,Pressure,Unnerve,Mirror Armor,7,0,0, 2.2,75,98,87,105,53,85,67,,
+356,1,3561,Dusclops,Ghost,,Black,Pressure,,Frisk,3,0,0,1.6,30.6,40,70,130,60,130,25,455
