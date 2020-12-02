@@ -1,58 +1,3 @@
-var PokemonData = [];
-var PokemonGalarList = [];
-function loadData() {
-    d3.csv("./galar_pokedex.csv").then(function (pokedex_data) {
-        pokedex_data.forEach(pokemon => {
-            // console.log(pokemon)
-            PokemonGalarList.push(pokemon["NAME"]);
-            PokemonData[pokemon["NAME"]] = {
-                Name: pokemon["NAME"],
-                Type1: pokemon["TYPE1"],
-                Type2: pokemon["TYPE2"],
-                Ability1: pokemon["ABILITY1"],
-                Ability2: pokemon["ABILITY2"],
-                AbilityHidden: pokemon["ABILITY HIDDEN"],
-                Height: pokemon["HEIGHT"],
-                Weight: pokemon["WEIGHT"],
-                HP: pokemon["HP"],
-                Attack: pokemon["ATK"],
-                Defense: pokemon["DEF"],
-                SpecialAttack: pokemon["SP_ATK"],
-                SpecialDefense: pokemon["SP_DEF"],
-                Speed: pokemon["SPD"],
-
-            }
-        });
-        // console.log(PokemonData);
-    })
-    d3.csv("./galar_locations.csv").then(function (location_data) {
-        location_data.forEach(pokemon => {
-            var locs = pokemon["LOCATIONS"].split("!");
-            var locationsAndChances = [];
-            var locationNames = [];
-            locs.forEach(loc => {
-                var locInfo = loc.split(":");
-                var locName = locInfo[0];
-                if (locName == "") {
-                    //null location
-                }
-                else {
-                    var locChance = locInfo[1];
-                    locationsAndChances[locName] = {
-                        LocationName: locName,
-                        SpawnChance: locChance
-                    }
-                    locationNames.push(locName);
-                }
-            });
-            PokemonData[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
-            PokemonData[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
-        })
-    });
-    // console.log(PokemonData)
-}
-
-
 let pokemonTypes = [
     "",
     "Normal",
@@ -242,6 +187,62 @@ TypeColors["Dark"] = "#8A6955";
 TypeColors["Steel"] = "#C4C2DB";
 TypeColors["Fairy"] = "#F9AEFF";
 //#endregion
+
+
+var PokemonData = [];
+var PokemonGalarList = [];
+function loadData() {
+    d3.csv("./galar_pokedex.csv").then(function (pokedex_data) {
+        pokedex_data.forEach(pokemon => {
+            // console.log(pokemon)
+            PokemonGalarList.push(pokemon["NAME"]);
+            PokemonData[pokemon["NAME"]] = {
+                Name: pokemon["NAME"],
+                Type1: pokemon["TYPE1"],
+                Type2: pokemon["TYPE2"],
+                Ability1: pokemon["ABILITY1"],
+                Ability2: pokemon["ABILITY2"],
+                AbilityHidden: pokemon["ABILITY HIDDEN"],
+                Height: pokemon["HEIGHT"],
+                Weight: pokemon["WEIGHT"],
+                HP: pokemon["HP"],
+                Attack: pokemon["ATK"],
+                Defense: pokemon["DEF"],
+                SpecialAttack: pokemon["SP_ATK"],
+                SpecialDefense: pokemon["SP_DEF"],
+                Speed: pokemon["SPD"],
+
+            }
+        });
+        // console.log(PokemonData);
+    })
+    d3.csv("./galar_locations.csv").then(function (location_data) {
+        location_data.forEach(pokemon => {
+            var locs = pokemon["LOCATIONS"].split("!");
+            var locationsAndChances = [];
+            var locationNames = [];
+            locs.forEach(loc => {
+                var locInfo = loc.split(":");
+                var locName = locInfo[0];
+                if (locName == "") {
+                    //null location
+                }
+                else {
+                    var locChance = locInfo[1];
+                    locationsAndChances[locName] = {
+                        LocationName: locName,
+                        SpawnChance: locChance,
+                        Point: generatePointInRegion(locations.filter(l => l["Name"])[0]["Points"])
+                    }
+                    locationNames.push(locName);
+                }
+            });
+            PokemonData[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
+            PokemonData[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
+        })
+    });
+    // console.log(PokemonData)
+}
 
 let MaxHP = 200;
 let MinHP = 0;
@@ -482,9 +483,22 @@ function renderRight() {
     });
 
     PokemonGalarList.forEach(pokemon => {
+        var color = TypeColors[PokemonData[pokemon]["Type1"]];
         var spawnLocations = PokemonData[pokemon]["SpawnLocationNames"];
-        spawnLocations.forEach(spawn => {
-            console.log(spawn)
+        // console.log(spawnLocations);
+        spawnLocations.forEach(loc => {
+            // console.log(loc);
+            var point = PokemonData[pokemon]["SpawnLocations"][loc]["Point"];
+            // console.log(point);
+            right.append("circle")
+                .attr("r", 5)
+                .attr("transform", `translate(${point[0]}, ${point[1]})`)
+                .attr("fill", color)
+                .attr("stroke", "white")
+                .attr('opacity', 0.9)
+                .on('mouseover', function (d){
+                    console.log(`${pokemon} at ${loc}`);
+                })
         })
     })
 
@@ -502,6 +516,26 @@ function resized() {
     rightWidth = rightScreen["width"];
     rightHeight = rightScreen["height"];
     render();
+}
+
+function generatePointInRegion(points){
+    // console.log(points);
+    let x1 = d3.min(points, function(d){
+        return d[0];
+    });
+    let x2 = d3.max(points, function(d){
+        return d[0];
+    });
+    let y1 = d3.min(points, function(d){
+        return d[1];
+    });
+    let y2 = d3.max(points, function(d){
+        return d[1];
+    });
+    let x = Math.floor((Math.random() * x2) + x1);
+    let y = Math.floor((Math.random() * y2) + y1)-500;
+    // console.log(`points: ${points} \n x1: ${x1} x2: ${x2} \n y1: ${y1} y2: ${y2} \n x: ${x} y: ${y}`);
+    return [x,y];
 }
 
 
