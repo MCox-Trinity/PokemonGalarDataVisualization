@@ -305,7 +305,7 @@ function renderLeft() {
 
         //Locations
         let locationsLabel = document.createElement("label");
-        locationsLabel.innerHTML = "Type 2"
+        locationsLabel.innerHTML = "Location";
         sortFilter.appendChild(locationsLabel);
         sortFilter.appendChild(document.createElement("br"));
         let locationsSection = document.createElement("select");
@@ -333,11 +333,14 @@ function renderMiddle() {
     if (existing !== null) {
         existing.remove();
     }
-    left = d3.select("#middle")
+    middle = d3.select("#middle")
         .append("svg")
         .attr("id", vizID)
         .attr("width", middleWidth)
         .attr("height", middleHeight);
+
+    //Table code goes here 
+        
 }
 
 function renderRight() {
