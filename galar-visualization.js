@@ -164,7 +164,7 @@ let locations = [
     //     [128, 238.5]]
     // },
 ]
- 
+
 let TypeColors = [];
 //#region Type Color Defs
 TypeColors[""] = "#FFFFFF";
@@ -188,33 +188,35 @@ TypeColors["Steel"] = "#C4C2DB";
 TypeColors["Fairy"] = "#F9AEFF";
 //#endregion
 
+var PokemonData_Filtered = [];
+var PokemonGalarList_Filtered = [];
 
-var PokemonData = [];
-var PokemonGalarList = [];
+var PokemonData_Full = [];
+var PokemonGalarList_Full = [];
 function loadData() {
     d3.csv("./galar_pokedex.csv").then(function (pokedex_data) {
         pokedex_data.forEach(pokemon => {
             // console.log(pokemon)
-            PokemonGalarList.push(pokemon["NAME"]);
-            PokemonData[pokemon["NAME"]] = {
+            PokemonGalarList_Full.push(pokemon["NAME"]);
+            PokemonData_Full[pokemon["NAME"]] = {
                 Name: pokemon["NAME"],
                 Type1: pokemon["TYPE1"],
                 Type2: pokemon["TYPE2"],
                 Ability1: pokemon["ABILITY1"],
                 Ability2: pokemon["ABILITY2"],
                 AbilityHidden: pokemon["ABILITY HIDDEN"],
-                Height: pokemon["HEIGHT"],
-                Weight: pokemon["WEIGHT"],
-                HP: pokemon["HP"],
-                Attack: pokemon["ATK"],
-                Defense: pokemon["DEF"],
-                SpecialAttack: pokemon["SP_ATK"],
-                SpecialDefense: pokemon["SP_DEF"],
-                Speed: pokemon["SPD"],
-
+                Height: +pokemon["HEIGHT"],
+                Weight: +pokemon["WEIGHT"],
+                HP: +pokemon["HP"],
+                Attack: +pokemon["ATK"],
+                Defense: +pokemon["DEF"],
+                SpecialAttack: +pokemon["SP_ATK"],
+                SpecialDefense: +pokemon["SP_DEF"],
+                Speed: +pokemon["SPD"],
+                Gen: +pokemon["GENERATION"]
             }
         });
-        // console.log(PokemonData);
+        // console.log(PokemonData_Full);
     })
     d3.csv("./galar_locations.csv").then(function (location_data) {
         location_data.forEach(pokemon => {
@@ -237,11 +239,15 @@ function loadData() {
                     locationNames.push(locName);
                 }
             });
-            PokemonData[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
-            PokemonData[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
+            PokemonData_Full[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
+            PokemonData_Full[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
         })
     });
-    // console.log(PokemonData)
+    // console.log(PokemonData_Full)
+    PokemonData_Filtered = PokemonData_Full;
+    PokemonGalarList_Filtered = PokemonGalarList_Full;
+    setMinAndMaxValues();
+    resized();
 }
 
 let MaxHP = 200;
@@ -263,7 +269,6 @@ var overlay = null;
 
 //The SVGs
 var left = null,
-    middle = null,
     right = null;
 
 //this var states if the left panel is currently displaying the detail view or the filter view
@@ -291,6 +296,7 @@ function renderLeft() {
             .attr("height", leftHeight);
     }
     else {
+        setMinAndMaxValues();
         //render the sort & filter view 
         let leftScreen = document.getElementById('left');
         leftScreen.innerHTML = "";
@@ -433,19 +439,80 @@ function renderLeft() {
 
 //function to render the table in the visualization
 function renderMiddle() {
-    let vizID = "middle-data";
-    let existing = document.getElementById(vizID);
-    if (existing !== null) {
-        existing.remove();
-    }
-    middle = d3.select("#middle")
-        .append("svg")
-        .attr("id", vizID)
-        .attr("width", middleWidth)
-        .attr("height", middleHeight);
+    let middle = document.getElementById("table-contents");
+    middle.innerHTML = "";
 
-    //Table code goes here 
+    //#region table header
+    let headerLoc = document.getElementById("table-header-area");
+    headerLoc.innerHTML = "";
+    
+    let header = document.createElement("div");
+    header.className = "table-row";
+    header.id = "header-row";
 
+    let nameHeader = document.createElement("div");
+    nameHeader.className = "name-col";
+    nameHeader.innerHTML = "<p>Name</p>";
+    header.appendChild(nameHeader);
+
+    let type1Header = document.createElement("div");
+    type1Header.className = "type1-col";
+    type1Header.innerHTML = "<p>Type 1</p>";
+    header.appendChild(type1Header);
+
+    let type2Header = document.createElement("div");
+    type2Header.className = "type2-col";
+    type2Header.innerHTML = "<p>Type 2</p>";
+    header.appendChild(type2Header);
+
+    let genHeader = document.createElement("div");
+    genHeader.className = "gen-col";
+    genHeader.innerHTML = "<p>Gen</p>";
+    header.appendChild(genHeader);
+
+    let hpHeader = document.createElement("div");
+    hpHeader.className = "hp-col";
+    hpHeader.innerHTML = "<p>HP</p>";
+    header.appendChild(hpHeader);
+
+    headerLoc.appendChild(header);
+    //#endregion
+
+    PokemonGalarList_Filtered.sort().forEach(pokemon => {
+        let pokemonData = PokemonData_Full[pokemon];
+
+        let row = document.createElement("div");
+        row.className = "table-row";
+
+        let name = document.createElement("div");
+        name.className = "name-col";
+        name.innerHTML = `<p>${pokemonData["Name"]}</p>`;
+        row.appendChild(name);
+
+        let type1 = document.createElement("div");
+        type1.className = "type1-col";
+        type1.innerHTML = `<p>${pokemonData["Type1"]}</p>`;
+        type1.style.setProperty('color', TypeColors[pokemonData["Type1"]]);
+        row.appendChild(type1);
+
+        let type2 = document.createElement("div");
+        type2.className = "type2-col";
+        type2.innerHTML = `<p>${pokemonData["Type2"]}</p>`;
+        type2.style.setProperty('color', TypeColors[pokemonData["Type2"]]);
+        row.appendChild(type2);
+
+        let gen = document.createElement("div");
+        gen.className = "gen-col";
+        gen.innerHTML = `<p>${pokemonData["Gen"]}</p>`;
+        row.appendChild(gen);
+
+        let hp = document.createElement("div");
+        hp.className = "hp-col";
+        hp.innerHTML = `<p>${pokemonData["HP"]}</p>`;
+        row.appendChild(hp);
+
+        middle.appendChild(row);
+    });
 }
 
 function renderRight() {
@@ -482,13 +549,13 @@ function renderRight() {
 
     });
 
-    PokemonGalarList.forEach(pokemon => {
-        var color = TypeColors[PokemonData[pokemon]["Type1"]];
-        var spawnLocations = PokemonData[pokemon]["SpawnLocationNames"];
+    PokemonGalarList_Filtered.forEach(pokemon => {
+        var color = TypeColors[PokemonData_Filtered[pokemon]["Type1"]];
+        var spawnLocations = PokemonData_Filtered[pokemon]["SpawnLocationNames"];
         // console.log(spawnLocations);
         spawnLocations.forEach(loc => {
             // console.log(loc);
-            var point = PokemonData[pokemon]["SpawnLocations"][loc]["Point"];
+            var point = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["Point"];
             // console.log(point);
             right.append("circle")
                 .attr("r", 5)
@@ -496,7 +563,7 @@ function renderRight() {
                 .attr("fill", color)
                 .attr("stroke", "white")
                 .attr('opacity', 0.9)
-                .on('mouseover', function (d){
+                .on('mouseover', function (d) {
                     console.log(`${pokemon} at ${loc}`);
                 })
         })
@@ -518,30 +585,47 @@ function resized() {
     render();
 }
 
-function generatePointInRegion(points){
+function generatePointInRegion(points) {
     // console.log(points);
-    let x1 = d3.min(points, function(d){
+    let x1 = d3.min(points, function (d) {
         return d[0];
     });
-    let x2 = d3.max(points, function(d){
+    let x2 = d3.max(points, function (d) {
         return d[0];
     });
-    let y1 = d3.min(points, function(d){
+    let y1 = d3.min(points, function (d) {
         return d[1];
     });
-    let y2 = d3.max(points, function(d){
+    let y2 = d3.max(points, function (d) {
         return d[1];
     });
     let x = Math.floor((Math.random() * x2) + x1);
-    let y = Math.floor((Math.random() * y2) + y1)-500;
+    let y = Math.floor((Math.random() * y2) + y1) - 500;
     // console.log(`points: ${points} \n x1: ${x1} x2: ${x2} \n y1: ${y1} y2: ${y2} \n x: ${x} y: ${y}`);
-    return [x,y];
+    return [x, y];
 }
 
+
+function setMinAndMaxValues(){
+    if(PokemonGalarList_Filtered.length == 0){
+        return;
+    }
+    let hpValues = [];
+    PokemonGalarList_Filtered.forEach(pokemon => {
+        hpValues.push(PokemonData_Filtered[pokemon]["HP"]);
+    });
+    let newMinHP = d3.min(hpValues);
+    if(newMinHP !== undefined){
+        MinHP = newMinHP;
+    }
+    let newMaxHP = d3.max(hpValues);
+    if(newMaxHP !== undefined){
+        MaxHP = newMaxHP;
+    }
+}
 
 
 //does the initial rendering of the visualization
 window.onload = () => {
     loadData();
-    resized();
 }
