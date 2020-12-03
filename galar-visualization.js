@@ -223,6 +223,7 @@ function loadData() {
             var locs = pokemon["LOCATIONS"].split("!");
             var locationsAndChances = [];
             var locationNames = [];
+            var locationChances = [];
             locs.forEach(loc => {
                 var locInfo = loc.split(":");
                 var locName = locInfo[0];
@@ -237,20 +238,23 @@ function loadData() {
                         Point: generatePointInRegion(locations.filter(l => l["Name"])[0]["Points"])
                     }
                     locationNames.push(locName);
+                    locationChances.push(locChance);
                 }
             });
             PokemonData_Full[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
             PokemonData_Full[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
+            PokemonData_Full[pokemon["NAME"]]["SpawnLocationChances"] = locationChances;
+
         })
     });
     // console.log(PokemonData_Full)
     PokemonData_Filtered = PokemonData_Full;
     PokemonGalarList_Filtered = PokemonGalarList_Full;
-    setMinAndMaxValues();
+    // setMinAndMaxValues();
     resized();
 }
 
-let MaxHP = 200;
+let MaxHP = 190;
 let MinHP = 0;
 
 let MaxChance = 100;
@@ -274,8 +278,21 @@ var left = null,
 //this var states if the left panel is currently displaying the detail view or the filter view
 var leftInDetailMode = false;
 
+var nameFilter = null,
+    type1Filter = null,
+    type2Filter = null,
+    locationFilter = null,
+    generationFilter = [1, 2, 3, 4, 5, 6, 7, 8],
+    hpMinFilter = MinHP,
+    hpMaxFilter = MaxHP,
+    spawnChanceMinFilter = MinChance,
+    spawnChanceMaxFilter = MaxChance;
+
+var currentFocus = null;
+
 //functions
 function render() {
+    generateFilteredPokemonList();
     renderLeft();
     renderMiddle();
     renderRight();
@@ -296,7 +313,12 @@ function renderLeft() {
             .attr("height", leftHeight);
     }
     else {
-        setMinAndMaxValues();
+        // setMinAndMaxValues();
+        if (currentFocus !== null) {
+            console.log(currentFocus);
+            document.getElementById(currentFocus).click();
+            // document.getElementById(currentFocus).select();
+        }
         //render the sort & filter view 
         let leftScreen = document.getElementById('left');
         leftScreen.innerHTML = "";
@@ -316,9 +338,18 @@ function renderLeft() {
         sortFilter.appendChild(nameLabel);
         sortFilter.appendChild(document.createElement("br"));
         let name = document.createElement("input");
+        name.value = nameFilter;
         name.type = "text";
+        name.id = "name-input";
         name.name = "name";
         name.autocomplete = "off";
+        name.addEventListener("input", function () {
+            filterResults();
+        }, true);
+        name.addEventListener("click", function () {
+            currentFocus = "name-input";
+        })
+
         sortFilter.appendChild(name);
         sortFilter.appendChild(document.createElement("br"));
 
@@ -332,8 +363,14 @@ function renderLeft() {
             let type = document.createElement("option");
             type.value = pokemon;
             type.innerHTML = pokemon;
+            type.style.setProperty('color', TypeColors[pokemon]);
             type1.appendChild(type);
         });
+        type1.addEventListener("change", function () {
+            filterResults();
+        }, true);
+        type1.id = "type1-input";
+        type1.value = type1Filter;
         sortFilter.appendChild(type1);
         sortFilter.appendChild(document.createElement("br"));
 
@@ -347,8 +384,14 @@ function renderLeft() {
             let type = document.createElement("option");
             type.value = pokemon;
             type.innerHTML = pokemon;
+            type.style.setProperty('color', TypeColors[pokemon]);
             type2.appendChild(type);
         });
+        type2.addEventListener("change", function () {
+            filterResults();
+        }, true);
+        type2.id = "type2-input";
+        type2.value = type2Filter;
         sortFilter.appendChild(type2);
         sortFilter.appendChild(document.createElement("br"));
 
@@ -366,6 +409,11 @@ function renderLeft() {
             locItem.innerHTML = loc["Name"];
             locationsSection.appendChild(locItem);
         });
+        locationsSection.addEventListener("change", function () {
+            filterResults();
+        }, true);
+        locationsSection.id = "location-input"
+        locationsSection.value = locationFilter;
         sortFilter.appendChild(locationsSection);
         sortFilter.appendChild(document.createElement("br"));
 
@@ -377,10 +425,11 @@ function renderLeft() {
         genSection.id = "gen";
         for (var i = 1; i <= 8; i++) {
             let genBox = document.createElement('table');
+            // console.log(generationFilter.includes(i))
             genBox.innerHTML =
                 `<tr>
                 <td class="verticalCheckbox">
-                    <input type="checkbox" id="${i}" name="delete" value=${i} align="" checked="true"><br>${i}
+                    <input type="checkbox" id="checkbox-${i}" name="delete" value=${i} align="" ${generationFilter.includes(i) ? "checked" : null} onChange="filterResults()"><br>${i}
                 </td>
             </tr>`
             genSection.appendChild(genBox);
@@ -395,7 +444,7 @@ function renderLeft() {
         let HPSection = document.createElement("div");
         HPSection.id = "HP";
         noUiSlider.create(HPSection, {
-            start: [MinHP, MaxHP],
+            start: [hpMinFilter, hpMaxFilter],
             connect: true,
             range: {
                 'min': MinHP,
@@ -407,6 +456,7 @@ function renderLeft() {
                 decimals: 0,
             })
         });
+        HPSection.noUiSlider.on("change", function () { filterResults(); })
         sortFilter.appendChild(HPSection);
 
         //Chance
@@ -416,7 +466,7 @@ function renderLeft() {
         let ChanceSection = document.createElement("div");
         ChanceSection.id = "Chance";
         noUiSlider.create(ChanceSection, {
-            start: [MinChance, MaxChance],
+            start: [spawnChanceMinFilter, spawnChanceMaxFilter],
             connect: true,
             range: {
                 'min': MinChance,
@@ -429,7 +479,17 @@ function renderLeft() {
                 suffix: '%'
             })
         });
+        ChanceSection.noUiSlider.on("change", function () { filterResults(); })
         sortFilter.appendChild(ChanceSection);
+
+        //reset
+        let resetButton = document.createElement("button");
+        resetButton.innerHTML = "Reset";
+        resetButton.addEventListener("click", function () {
+            resetFilters();
+        }, true);
+        resetButton.id = "filter-reset";
+        sortFilter.appendChild(resetButton);
 
 
         leftScreen.appendChild(sortFilter);
@@ -445,7 +505,7 @@ function renderMiddle() {
     //#region table header
     let headerLoc = document.getElementById("table-header-area");
     headerLoc.innerHTML = "";
-    
+
     let header = document.createElement("div");
     header.className = "table-row";
     header.id = "header-row";
@@ -555,17 +615,22 @@ function renderRight() {
         // console.log(spawnLocations);
         spawnLocations.forEach(loc => {
             // console.log(loc);
-            var point = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["Point"];
-            // console.log(point);
-            right.append("circle")
-                .attr("r", 5)
-                .attr("transform", `translate(${point[0]}, ${point[1]})`)
-                .attr("fill", color)
-                .attr("stroke", "white")
-                .attr('opacity', 0.9)
-                .on('mouseover', function (d) {
-                    console.log(`${pokemon} at ${loc}`);
-                })
+            var spawnChance = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["SpawnChance"]
+            if ((locationFilter == null || locationFilter == loc) &&
+                spawnChance >= spawnChanceMinFilter &&
+                spawnChance <= spawnChanceMaxFilter) {
+                var point = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["Point"];
+                // console.log(point);
+                right.append("circle")
+                    .attr("r", 5)
+                    .attr("transform", `translate(${point[0]}, ${point[1]})`)
+                    .attr("fill", color)
+                    .attr("stroke", "white")
+                    .attr('opacity', 0.9)
+                    .on('mouseover', function (d) {
+                        console.log(`${pokemon} at ${loc}`);
+                    })
+            }
         })
     })
 
@@ -606,8 +671,8 @@ function generatePointInRegion(points) {
 }
 
 
-function setMinAndMaxValues(){
-    if(PokemonGalarList_Filtered.length == 0){
+function setMinAndMaxValues() {
+    if (PokemonGalarList_Filtered.length == 0) {
         return;
     }
     let hpValues = [];
@@ -615,15 +680,89 @@ function setMinAndMaxValues(){
         hpValues.push(PokemonData_Filtered[pokemon]["HP"]);
     });
     let newMinHP = d3.min(hpValues);
-    if(newMinHP !== undefined){
+    if (newMinHP !== undefined) {
         MinHP = newMinHP;
     }
     let newMaxHP = d3.max(hpValues);
-    if(newMaxHP !== undefined){
+    if (newMaxHP !== undefined) {
         MaxHP = newMaxHP;
     }
 }
 
+function resetFilters() {
+    nameFilter = null;
+    type1Filter = null;
+    type2Filter = null;
+    locationFilter = null;
+    generationFilter = [1, 2, 3, 4, 5, 6, 7, 8];
+    hpMinFilter = MinHP;
+    hpMaxFilter = MaxHP;
+    spawnChanceMinFilter = MinChance;
+    spawnChanceMaxFilter = MaxChance;
+    render();
+}
+
+function filterResults() {
+    //name
+    var nameField = document.getElementById("name-input").value;
+    nameFilter = nameField.length == 0 ? null : nameField;
+
+    //type1
+    var type1Field = document.getElementById("type1-input").value;
+    type1Filter = type1Field.length == 0 ? null : type1Field;
+
+    //type2
+    var type2Field = document.getElementById("type2-input").value;
+    type2Filter = type2Field.length == 0 ? null : type2Field;
+
+    //location
+    var locationField = document.getElementById("location-input").value;
+    locationFilter = locationField.length == 0 ? null : locationField;
+
+    //gen
+    var generationsField = [];
+    for (var i = 1; i <= 8; i++) {
+        var genCheckbox = document.getElementById(`checkbox-${i}`);
+        if (genCheckbox.checked == true) {
+            generationsField.push(i);
+        }
+    }
+    generationFilter = generationsField;
+    // console.log(generationsField);
+    // console.log(generationFilter);
+
+    //hp
+    var hpField = document.getElementById("HP").noUiSlider.get();
+    hpMinFilter = +hpField[0];
+    hpMaxFilter = +hpField[1];
+
+    var chanceField = document.getElementById("Chance").noUiSlider.get();
+    spawnChanceMinFilter = +(chanceField[0].replace("%", ""));
+    spawnChanceMaxFilter = +(chanceField[1].replace("%", ""));
+
+    render();
+}
+
+function generateFilteredPokemonList() {
+    var newList = [];
+    PokemonGalarList_Full.forEach(pokemon => {
+        var pokemonData = PokemonData_Full[pokemon];
+        // console.log(`canSpawnAtRate: ${canSpawnAtRate(pokemon)}`)
+        // console.log(`Pokemon: ${pokemonData["Name"]} \n Filter: ${locationFilter} \n  Spawn Locations: ${pokemonData["SpawnLocationNames"]} \n Result: ${pokemonData["SpawnLocationNames"].includes(locationFilter)}`);
+        if (
+            (nameFilter == null || pokemonData["Name"].toLowerCase().includes(nameFilter.toLowerCase())) &&
+            (type1Filter == null || pokemonData["Type1"] == type1Filter) &&
+            (type2Filter == null || pokemonData["Type2"] == type2Filter) &&
+            (locationFilter == null || pokemonData["SpawnLocationNames"].includes(locationFilter)) &&
+            (pokemonData["HP"] >= hpMinFilter && pokemonData["HP"] <= hpMaxFilter) &&
+            (generationFilter.includes(pokemonData["Gen"])) &&
+            (pokemonData["SpawnLocationChances"].filter(c => c >= spawnChanceMinFilter && c <= spawnChanceMaxFilter).length > 0)
+        ) {
+            newList.push(pokemon);
+        }
+    });
+    PokemonGalarList_Filtered = newList;
+}
 
 //does the initial rendering of the visualization
 window.onload = () => {

@@ -23,6 +23,7 @@
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index: 1;
+    overflow: auto;
 }
 
 #middle{
@@ -124,7 +125,7 @@
 }
 
 #table-contents{
-    overflow-y: scroll;
+    overflow-y: auto;
     height: calc(100% - 3em);
 }
 
@@ -152,4 +153,17 @@ div.type1-col, div.type2-col{
 div.gen-col, div.hp-col{
     width: 5%;
     text-align: right;
+}
+
+button#filter-reset{
+    background-color: #3FB8AF;
+    color: white;
+    border: none;
+    padding: 1em 2em 1em 2em;
+    float: right;
+}
+
+button#filter-reset:hover{
+    background-color: #9ccf76;
+    transition: background-color .5s;
 }
