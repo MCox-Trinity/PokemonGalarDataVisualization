@@ -629,11 +629,11 @@ function renderRight() {
                     .attr('opacity', 0.9)
                     .on('mouseover', function (d) {
                         console.log(`${pokemon} at ${loc}`);
+                        displayHoverCard();
                     })
             }
         })
     })
-
 }
 
 //function to resize the visualization with window
@@ -762,6 +762,10 @@ function generateFilteredPokemonList() {
         }
     });
     PokemonGalarList_Filtered = newList;
+}
+
+function displayHoverCard(){
+    //@Sabrina you can put the hover card code here
 }
 
 //does the initial rendering of the visualization
