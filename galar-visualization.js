@@ -294,6 +294,7 @@ function render() {
     renderLeft();
     renderMiddle();
     renderRight();
+    console.log(PokemonInfo["Magikarp"]);
 }
 
 function renderLeft() {
@@ -312,11 +313,11 @@ function renderLeft() {
     }
     else {
         // setMinAndMaxValues();
-        if (currentFocus !== null) {
-            console.log(currentFocus);
-            document.getElementById(currentFocus).click();
-            // document.getElementById(currentFocus).select();
-        }
+        // if (currentFocus !== null) {
+        //     console.log(currentFocus);
+        //     document.getElementById(currentFocus).click();
+        //     // document.getElementById(currentFocus).select();
+        // }
         //render the sort & filter view 
         let leftScreen = document.getElementById('left');
         leftScreen.innerHTML = "";
@@ -341,6 +342,7 @@ function renderLeft() {
         name.id = "name-input";
         name.name = "name";
         name.autocomplete = "off";
+        name.autofocus = true;
         name.addEventListener("input", function () {
             filterResults();
         }, true);
