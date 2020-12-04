@@ -188,17 +188,16 @@ TypeColors["Steel"] = "#C4C2DB";
 TypeColors["Fairy"] = "#F9AEFF";
 //#endregion
 
-var PokemonData_Filtered = [];
 var PokemonGalarList_Filtered = [];
 
-var PokemonData_Full = [];
+var PokemonInfo = [];
 var PokemonGalarList_Full = [];
 function loadData() {
     d3.csv("./galar_pokedex.csv").then(function (pokedex_data) {
         pokedex_data.forEach(pokemon => {
             // console.log(pokemon)
             PokemonGalarList_Full.push(pokemon["NAME"]);
-            PokemonData_Full[pokemon["NAME"]] = {
+            PokemonInfo[pokemon["NAME"]] = {
                 Name: pokemon["NAME"],
                 Type1: pokemon["TYPE1"],
                 Type2: pokemon["TYPE2"],
@@ -216,7 +215,7 @@ function loadData() {
                 Gen: +pokemon["GENERATION"]
             }
         });
-        // console.log(PokemonData_Full);
+        // console.log(PokemonInfo);
     })
     d3.csv("./galar_locations.csv").then(function (location_data) {
         location_data.forEach(pokemon => {
@@ -241,14 +240,13 @@ function loadData() {
                     locationChances.push(locChance);
                 }
             });
-            PokemonData_Full[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
-            PokemonData_Full[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
-            PokemonData_Full[pokemon["NAME"]]["SpawnLocationChances"] = locationChances;
+            PokemonInfo[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
+            PokemonInfo[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
+            PokemonInfo[pokemon["NAME"]]["SpawnLocationChances"] = locationChances;
 
         })
     });
-    // console.log(PokemonData_Full)
-    PokemonData_Filtered = PokemonData_Full;
+    // console.log(PokemonInfo)
     PokemonGalarList_Filtered = PokemonGalarList_Full;
     // setMinAndMaxValues();
     resized();
@@ -539,7 +537,7 @@ function renderMiddle() {
     //#endregion
 
     PokemonGalarList_Filtered.sort().forEach(pokemon => {
-        let pokemonData = PokemonData_Full[pokemon];
+        let pokemonData = PokemonInfo[pokemon];
 
         let row = document.createElement("div");
         row.className = "table-row";
@@ -610,16 +608,16 @@ function renderRight() {
     });
 
     PokemonGalarList_Filtered.forEach(pokemon => {
-        var color = TypeColors[PokemonData_Filtered[pokemon]["Type1"]];
-        var spawnLocations = PokemonData_Filtered[pokemon]["SpawnLocationNames"];
+        var color = TypeColors[PokemonInfo[pokemon]["Type1"]];
+        var spawnLocations = PokemonInfo[pokemon]["SpawnLocationNames"];
         // console.log(spawnLocations);
         spawnLocations.forEach(loc => {
             // console.log(loc);
-            var spawnChance = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["SpawnChance"]
+            var spawnChance = PokemonInfo[pokemon]["SpawnLocations"][loc]["SpawnChance"]
             if ((locationFilter == null || locationFilter == loc) &&
                 spawnChance >= spawnChanceMinFilter &&
                 spawnChance <= spawnChanceMaxFilter) {
-                var point = PokemonData_Filtered[pokemon]["SpawnLocations"][loc]["Point"];
+                var point = PokemonInfo[pokemon]["SpawnLocations"][loc]["Point"];
                 // console.log(point);
                 right.append("circle")
                     .attr("r", 5)
@@ -677,7 +675,7 @@ function setMinAndMaxValues() {
     }
     let hpValues = [];
     PokemonGalarList_Filtered.forEach(pokemon => {
-        hpValues.push(PokemonData_Filtered[pokemon]["HP"]);
+        hpValues.push(PokemonInfo[pokemon]["HP"]);
     });
     let newMinHP = d3.min(hpValues);
     if (newMinHP !== undefined) {
@@ -746,7 +744,7 @@ function filterResults() {
 function generateFilteredPokemonList() {
     var newList = [];
     PokemonGalarList_Full.forEach(pokemon => {
-        var pokemonData = PokemonData_Full[pokemon];
+        var pokemonData = PokemonInfo[pokemon];
         // console.log(`canSpawnAtRate: ${canSpawnAtRate(pokemon)}`)
         // console.log(`Pokemon: ${pokemonData["Name"]} \n Filter: ${locationFilter} \n  Spawn Locations: ${pokemonData["SpawnLocationNames"]} \n Result: ${pokemonData["SpawnLocationNames"].includes(locationFilter)}`);
         if (
