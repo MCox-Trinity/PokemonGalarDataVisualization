@@ -232,7 +232,7 @@ function loadData() {
         else {
           var locationList = locations.filter(x => x["Name"] == locName)
           var locZero = locationList[0]
-          console.log(locName)
+          // console.log(locName)
           var locChance = locInfo[1];
           locationsAndChances[locName] = {
             LocationName: locName,
@@ -265,7 +265,7 @@ function loadData() {
   resized();
 }
 
-
+//#region global variables
 let MaxHP = 190;
 let MinHP = 0;
 
@@ -301,6 +301,7 @@ var nameFilter = null,
   spawnChanceMaxFilter = MaxChance;
 
 var currentFocus = null;
+//#endregion
 
 //functions
 function render() {
@@ -571,6 +572,7 @@ function renderMiddle() {
     console.log("none in list")
     let row = document.createElement("div");
     row.className = "table-row";
+    row.id = "no-pokeomon"
     row.innerHTML = `<p>No Pokemon match these criteria.</p>`
     middle.appendChild(row);
   }
@@ -813,7 +815,7 @@ function getRandomPoint(shape) {
   triangles = triangulate(shape)
   selectTriangle = selectRandomTriangle(triangles)
   point = calcRandomPoint(selectTriangle)
-  console.log("mq" + point)
+  // console.log("mq" + point)
   return point
   function triangulate(points) {
     const earcut = createEarcut();

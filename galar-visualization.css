@@ -167,3 +167,8 @@ button#filter-reset:hover{
     background-color: #9ccf76;
     transition: background-color .5s;
 }
+
+#no-pokeomon p{
+    width: 100%;
+    text-align: center;
+}
