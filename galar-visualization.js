@@ -252,6 +252,13 @@ function loadData() {
 
     })
   });
+  d3.csv("./galar_images.csv").then(function (location_data){
+    location_data.forEach(pokemon => {
+      var name = pokemon["NAME"];
+      var image = pokemon["IMAGE-URL"];
+      PokemonInfo[name]["ImageURL"] = image;
+    })
+  })
   // console.log(PokemonInfo)
   PokemonGalarList_Filtered = PokemonGalarList_Full;
   // setMinAndMaxValues();
@@ -610,9 +617,9 @@ function renderRight() {
     var loc = lineGenerator(location["Points"])
     right.append("path")
       .attr('d', loc)
-      .attr('fill', '#fe019a')
+      .attr('fill', "none")
       .attr('opacity', 0.5)
-      .attr('stroke', '#fe019a');
+      .attr('stroke', 'none');
 
   });
 
