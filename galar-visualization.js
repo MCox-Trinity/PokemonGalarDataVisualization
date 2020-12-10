@@ -252,7 +252,7 @@ function loadData() {
 
     })
   });
-  d3.csv("./galar_images.csv").then(function (location_data){
+  d3.csv("./galar_images.csv").then(function (location_data) {
     location_data.forEach(pokemon => {
       var name = pokemon["NAME"];
       var image = pokemon["IMAGE-URL"];
@@ -308,7 +308,22 @@ function render() {
   renderLeft();
   renderMiddle();
   renderRight();
-  console.log(PokemonInfo["Magikarp"]);
+  // console.log(PokemonInfo["Magikarp"]);
+}
+
+function softRender(){
+  //softRender reloads all of the panes except the left pane
+  generateFilteredPokemonList();
+  renderMiddle();
+  renderRight();
+}
+
+function hardRender(){
+  //hardRender reloads all of the panes including the left pane
+  generateFilteredPokemonList();
+  renderLeft();
+  renderMiddle();
+  renderRight();
 }
 
 function renderLeft() {
@@ -552,41 +567,50 @@ function renderMiddle() {
   headerLoc.appendChild(header);
   //#endregion
 
-  PokemonGalarList_Filtered.sort().forEach(pokemon => {
-    let pokemonData = PokemonInfo[pokemon];
-
+  if (PokemonGalarList_Filtered.length == 0) {
+    console.log("none in list")
     let row = document.createElement("div");
     row.className = "table-row";
-
-    let name = document.createElement("div");
-    name.className = "name-col";
-    name.innerHTML = `<p>${pokemonData["Name"]}</p>`;
-    row.appendChild(name);
-
-    let type1 = document.createElement("div");
-    type1.className = "type1-col";
-    type1.innerHTML = `<p>${pokemonData["Type1"]}</p>`;
-    type1.style.setProperty('color', TypeColors[pokemonData["Type1"]]);
-    row.appendChild(type1);
-
-    let type2 = document.createElement("div");
-    type2.className = "type2-col";
-    type2.innerHTML = `<p>${pokemonData["Type2"]}</p>`;
-    type2.style.setProperty('color', TypeColors[pokemonData["Type2"]]);
-    row.appendChild(type2);
-
-    let gen = document.createElement("div");
-    gen.className = "gen-col";
-    gen.innerHTML = `<p>${pokemonData["Gen"]}</p>`;
-    row.appendChild(gen);
-
-    let hp = document.createElement("div");
-    hp.className = "hp-col";
-    hp.innerHTML = `<p>${pokemonData["HP"]}</p>`;
-    row.appendChild(hp);
-
+    row.innerHTML = `<p>No Pokemon match these criteria.</p>`
     middle.appendChild(row);
-  });
+  }
+  else {
+    PokemonGalarList_Filtered.sort().forEach(pokemon => {
+      let pokemonData = PokemonInfo[pokemon];
+
+      let row = document.createElement("div");
+      row.className = "table-row";
+
+      let name = document.createElement("div");
+      name.className = "name-col";
+      name.innerHTML = `<p>${pokemonData["Name"]}</p>`;
+      row.appendChild(name);
+
+      let type1 = document.createElement("div");
+      type1.className = "type1-col";
+      type1.innerHTML = `<p>${pokemonData["Type1"]}</p>`;
+      type1.style.setProperty('color', TypeColors[pokemonData["Type1"]]);
+      row.appendChild(type1);
+
+      let type2 = document.createElement("div");
+      type2.className = "type2-col";
+      type2.innerHTML = `<p>${pokemonData["Type2"]}</p>`;
+      type2.style.setProperty('color', TypeColors[pokemonData["Type2"]]);
+      row.appendChild(type2);
+
+      let gen = document.createElement("div");
+      gen.className = "gen-col";
+      gen.innerHTML = `<p>${pokemonData["Gen"]}</p>`;
+      row.appendChild(gen);
+
+      let hp = document.createElement("div");
+      hp.className = "hp-col";
+      hp.innerHTML = `<p>${pokemonData["HP"]}</p>`;
+      row.appendChild(hp);
+
+      middle.appendChild(row);
+    });
+  }
 }
 
 function renderRight() {
@@ -661,7 +685,7 @@ function resized() {
   let rightScreen = document.getElementById('right').getBoundingClientRect();
   rightWidth = rightScreen["width"];
   rightHeight = rightScreen["height"];
-  render();
+  hardRender();
 }
 
 function generatePointInRegion(points) {
@@ -713,7 +737,7 @@ function resetFilters() {
   hpMaxFilter = MaxHP;
   spawnChanceMinFilter = MinChance;
   spawnChanceMaxFilter = MaxChance;
-  render();
+  softRender();
 }
 
 function filterResults() {
@@ -754,7 +778,7 @@ function filterResults() {
   spawnChanceMinFilter = +(chanceField[0].replace("%", ""));
   spawnChanceMaxFilter = +(chanceField[1].replace("%", ""));
 
-  render();
+  softRender();
 }
 
 function generateFilteredPokemonList() {
