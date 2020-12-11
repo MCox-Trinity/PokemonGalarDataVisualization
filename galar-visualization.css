@@ -1,4 +1,4 @@
-#visualization{
+#visualization {
     max-width: 100vw;
     max-height: 100vh;
     width: 100vw;
@@ -10,15 +10,15 @@
     overflow: hidden;
 }
 
-#resizable{
+#resizable {
     display: flex;
     flex-direction: row;
     width: 100%;
     /* background-color: peachpuff; */
 }
 
-#left{
-    width: 25%;
+#left {
+    width: 30%;
     height: 100vh;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -26,33 +26,35 @@
     overflow: auto;
 }
 
-#middle{
+#middle {
     height: 100vh;
-    width: 75%;
+    width: 70%;
     font-family: 'Raleway', sans-serif;
     z-index: 0;
     /* background-color: palevioletred; */
 }
 
-#right{
+#right {
     width: fit-content;
     height: 100vh;
     /* background-color: palegreen; */
     display: flex;
     overflow: hidden;
 }
-#right img{
+
+#right img {
     max-width: 100%;
     height: 100vh;
-    width: auto\9; /* ie8 */
-    opacity: 0.5;
+    width: auto\9;
+    /* ie8 */
+    opacity: 0.25;
 }
 
-.sortFilter{
+.sortFilter {
     padding: 1em;
 }
 
-.sortFilter h1{
+.sortFilter h1 {
     font-family: 'Sansita Swashed', cursive;
     text-align: center;
     color: #3FB8AF;
@@ -60,7 +62,7 @@
     margin-bottom: 1em;
 }
 
-.sortFilter input[type="text"]{
+.sortFilter input[type="text"] {
     width: 97%;
     height: 1.5em;
     margin-right: .2em;
@@ -70,7 +72,7 @@
     font-weight: bold;
 }
 
-.sortFilter select{
+.sortFilter select {
     width: 100%;
     height: 2em;
     margin-top: .3em;
@@ -79,17 +81,17 @@
     font-weight: bold;
 }
 
-.sortFilter option{
+.sortFilter option {
     font-family: 'Raleway', sans-serif;
     font-weight: bold;
 }
 
-.sortFilter label{
+.sortFilter label {
     font-family: 'Raleway', sans-serif;
     font-weight: bold;
 }
 
-#gen{
+#gen {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -98,24 +100,24 @@
     font-family: 'Raleway', sans-serif;
 }
 
-#HP, #Chance{
+#HP, #Chance {
     padding-left: 1em;
     padding-right: 1em;
     margin-top: .5em;
     margin-bottom: 4em;
 }
 
-.verticalCheckbox{
+.verticalCheckbox {
     text-align: center;
     font-family: 'Raleway', sans-serif;
 }
 
-.noUi-tooltip { 
-    bottom:-32px !important;
+.noUi-tooltip {
+    bottom: -32px !important;
     font-family: 'Raleway', sans-serif;
 }
 
-#middle #header-row{
+#middle #header-row {
     height: 2.5em;
     border-bottom: solid 2px #3FB8AF;
     color: #3FB8AF;
@@ -124,12 +126,12 @@
     padding-bottom: .5em;
 }
 
-#table-contents{
+#table-contents {
     overflow-y: auto;
     height: calc(100% - 3em);
 }
 
-#middle .table-row{
+#middle .table-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,25 +139,34 @@
     padding-right: 3em;
     height: 2em;
 }
-#table-contents .table-row:nth-child(odd){
+
+#table-contents .table-row:nth-child(odd) {
     background-color: #fbfbfb;
 }
 
-div.name-col{
+#table-contents .table-row:hover {
+    background-color: #edfaff;
+}
+
+#table-contents .table-row .selectedPokemon {
+    background-color: red !important;
+}
+
+div.name-col {
     width: 30%;
 }
 
-div.type1-col, div.type2-col{
+div.type1-col, div.type2-col {
     width: 15%;
     font-weight: bold;
 }
 
-div.gen-col, div.hp-col{
+div.gen-col, div.hp-col {
     width: 5%;
     text-align: right;
 }
 
-button#filter-reset{
+button#filter-reset {
     background-color: #3FB8AF;
     color: white;
     border: none;
@@ -163,12 +174,123 @@ button#filter-reset{
     float: right;
 }
 
-button#filter-reset:hover{
+button#filter-reset:hover {
     background-color: #9ccf76;
     transition: background-color .5s;
 }
 
-#no-pokeomon p{
+#no-pokeomon p {
     width: 100%;
     text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.pokemon-details {
+    padding: 1em;
+    width: calc(100% - 2em);
+    height: calc(100% - 2em);
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Raleway', sans-serif;
+}
+
+.pokemon-details .image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    height: 15em;
+}
+
+.pokemon-details .image img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.pokemon-details #close-button {
+    background-color: transparent;
+    border: none;
+    opacity: 1;
+}
+
+.pokemon-details #close-button:hover {
+    opacity: 0.5;
+    transition: opacity .5s;
+}
+
+.pokemon-details img#close-button {
+    width: 1.5em;
+}
+
+.pokemon-details #name h1 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+.pokemon-details #types {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-weight: 1em;
+}
+
+.pokemon-details #types *, .pokemon-details #dimensions * {
+    padding: .5em;
+    padding-top: 1em;
+}
+
+.pokemon-details .main-details{
+    font-size: 1em;
+    text-align: center;
+    margin-bottom: .5em;
+}
+
+.pokemon-details hr {
+    border-top: .5px solid #efefef;
+    margin-top: 1.5em;
+}
+
+.pokemon-details .detail-header{
+    text-align: center;
+    color: #3FB8AF;
+    font-weight: bold;
+    font-size: 1em;
+    margin-top: 1em;
+}
+
+.pokemon-details .spawnLocations, .pokemon-details #abilities {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 1em;
+    padding-top: 0;
+}
+
+.pokemon-details .spawnLocations p, .pokemon-details #abilities p {
+    font-size: 1em;
+    margin-top: 1em;
+    height: 1em;
+}
+
+.pokemon-details .spawnLocations #spawnLocationNames{
+    font-weight: bold;
+}
+
+.pokemon-details .emphasized{
+    color: #3FB8AF;
+    font-weight: bold;
+}
+
+.pokemon-details #dimensions{
+    display: flex;
+    font-size: 1em;
+    justify-content: center;
+}
+
+.pokemon-details #dimensions b{
+    font-weight: bold;
 }

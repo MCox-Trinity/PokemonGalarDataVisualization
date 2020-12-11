@@ -181,7 +181,7 @@ TypeColors["Bug"] = "#C2D21F";
 TypeColors["Ghost"] = "#726ECB";
 TypeColors["Electric"] = "#FDE039";
 TypeColors["Psychic"] = "#F562B1";
-TypeColors["Ice"] = "#96F1FF";
+TypeColors["Ice"] = "#9cd1d9";
 TypeColors["Dragon"] = "#8774FF";
 TypeColors["Dark"] = "#8A6955";
 TypeColors["Steel"] = "#C4C2DB";
@@ -237,8 +237,6 @@ function loadData() {
           locationsAndChances[locName] = {
             LocationName: locName,
             SpawnChance: locChance,
-            //Point: generatePointInRegion(locations.filter(l => l["Name"])[0]["Points"])
-            //try this instead of ^^
             Point: getRandomPoint(locZero["Points"])
 
           }
@@ -301,6 +299,8 @@ var nameFilter = null,
   spawnChanceMaxFilter = MaxChance;
 
 var currentFocus = null;
+
+var selectedPokemon = null;
 //#endregion
 
 //functions
@@ -312,14 +312,14 @@ function render() {
   // console.log(PokemonInfo["Magikarp"]);
 }
 
-function softRender(){
+function softRender() {
   //softRender reloads all of the panes except the left pane
   generateFilteredPokemonList();
   renderMiddle();
   renderRight();
 }
 
-function hardRender(){
+function hardRender() {
   //hardRender reloads all of the panes including the left pane
   generateFilteredPokemonList();
   renderLeft();
@@ -328,26 +328,192 @@ function hardRender(){
 }
 
 function renderLeft() {
-  if (leftInDetailMode) {
+  if (selectedPokemon !== null) {
     //render the detail view for the selected pokemon 
-    let vizID = "left-data";
-    let existing = document.getElementById(vizID);
-    if (existing !== null) {
-      existing.remove();
+    let leftScreen = document.getElementById('left');
+    leftScreen.innerHTML = "";
+
+    let selectedInfo = PokemonInfo[selectedPokemon];
+    let container = document.createElement("div");
+    container.className = "pokemon-details";
+
+    //close button
+    let closeImage = document.createElement("img");
+    closeImage.id = "close-button";
+    closeImage.src = "https://img.icons8.com/flat_round/64/000000/delete-sign.png";
+    closeImage.addEventListener("click", function () {
+      selectPokemon(null);
+    }, true);
+    container.appendChild(closeImage);
+
+    //image 
+    let imageContainer = document.createElement('div');
+    imageContainer.className = "image";
+    let image = document.createElement('img');
+    image.src = selectedInfo["ImageURL"];
+    imageContainer.append(image);
+    container.appendChild(imageContainer);
+
+    //name
+    let nameContainer = document.createElement("div");
+    nameContainer.id = "name"
+    let name = document.createElement("h1");
+    name.innerHTML = selectedInfo["Name"];
+    nameContainer.appendChild(name);
+    container.appendChild(nameContainer);
+
+    //type
+    let typeContainer = document.createElement("div");
+    typeContainer.id = "types";
+    let type1 = document.createElement("p");
+    type1.innerHTML = selectedInfo["Type1"];
+    type1.style.setProperty('color', TypeColors[selectedInfo["Type1"]]);
+    typeContainer.appendChild(type1);
+    if (selectedInfo["Type2"].length !== 0) {
+      let comma = document.createElement("p");
+      comma.innerHTML = " ";
+      typeContainer.appendChild(comma);
+      let type2 = document.createElement("p");
+      type2.innerHTML = selectedInfo["Type2"];
+      type2.style.setProperty('color', TypeColors[selectedInfo["Type2"]]);
+      typeContainer.appendChild(type2);
     }
-    left = d3.select("#left")
-      .append("svg")
-      .attr("id", vizID)
-      .attr("width", leftWidth)
-      .attr("height", leftHeight);
+    container.appendChild(typeContainer);
+
+    //Gen
+    let gen = document.createElement("p");
+    gen.className = "main-details";
+    gen.innerHTML = `${getGenerationText(selectedInfo["Gen"])} generation`;
+    container.appendChild(gen);
+
+    //HP
+    let hp = document.createElement("p");
+    hp.className = "main-details";
+    hp.innerHTML = `${selectedInfo["HP"]} HP`;
+    container.appendChild(hp);
+
+    //line seperator
+    container.appendChild(document.createElement("hr"));
+
+    //spawnLocations
+    let spawnLocationContainer = document.createElement("div");
+    spawnLocationContainer.className = "spawnLocations";
+    let spawnChanceHeader = document.createElement("h1");
+    spawnChanceHeader.innerHTML = "Spawn Locations";
+    spawnChanceHeader.className = "detail-header";
+    container.appendChild(spawnChanceHeader);
+    let spawnLocations = document.createElement("div");
+    spawnLocations.id = "spawnLocationNames"
+    let spawnChances = document.createElement("div");
+    selectedInfo["SpawnLocationNames"].forEach(loc => {
+      let spawnLocation = document.createElement("p");
+      spawnLocation.innerHTML = selectedInfo["SpawnLocations"][loc]["LocationName"];
+      spawnLocations.appendChild(spawnLocation);
+      let spawnChance = document.createElement("p");
+      spawnChance.innerHTML = `${selectedInfo["SpawnLocations"][loc]["SpawnChance"]}%`;
+      spawnChances.appendChild(spawnChance);
+    });
+    spawnLocationContainer.appendChild(spawnLocations);
+    spawnLocationContainer.appendChild(spawnChances);
+    container.appendChild(spawnLocationContainer);
+
+    //line seperator
+    container.appendChild(document.createElement("hr"));
+
+    //Abilities 
+    let abilitiesHeader = document.createElement("h1");
+    abilitiesHeader.innerHTML = "Abilities";
+    abilitiesHeader.className = "detail-header";
+    let abilitiesContainer = document.createElement("div");
+    abilitiesContainer.id = "abilities";
+    let abilityID = document.createElement("div");
+    abilityID.className = "emphasized";
+    let abilityName = document.createElement("div");
+    //Ability 1
+    let ability1ID = document.createElement("p");
+    ability1ID.innerHTML = "Ability 1";
+    abilityID.appendChild(ability1ID);
+    let ability1Name = document.createElement("p");
+    ability1Name.innerHTML = selectedInfo["Ability1"].length == 0 ? "None" : selectedInfo["Ability1"];
+    abilityName.appendChild(ability1Name);
+    //Ability 2
+    let ability2ID = document.createElement("p");
+    ability2ID.innerHTML = "Ability 2";
+    abilityID.appendChild(ability2ID);
+    let ability2Name = document.createElement("p");
+    ability2Name.innerHTML = selectedInfo["Ability2"].length == 0 ? "None" : selectedInfo["Ability2"];
+    abilityName.appendChild(ability2Name);
+    //Ability Hidden
+    let abilityHiddenID = document.createElement("p");
+    abilityHiddenID.innerHTML = "Hidden Ability";
+    abilityID.appendChild(abilityHiddenID);
+    let abilityHiddenName = document.createElement("p");
+    abilityHiddenName.innerHTML = selectedInfo["AbilityHidden"].length == 0 ? "None" : selectedInfo["AbilityHidden"];
+    abilityName.appendChild(abilityHiddenName);
+    abilitiesContainer.appendChild(abilityID);
+    abilitiesContainer.appendChild(abilityName);
+    container.appendChild(abilitiesContainer);
+
+    //line seperator
+    container.appendChild(document.createElement("hr"));
+
+    //Height and Weight 
+    let dimensionsContainer = document.createElement("div");
+    dimensionsContainer.id = "dimensions"
+    dimensionsContainer.innerHTML = `<div><p><b>Height: </b> ${selectedInfo["Height"]} m</p></div><div><p><b>Weight: </b> ${selectedInfo["Weight"]} kg</p></div>`
+    container.appendChild(dimensionsContainer);
+
+    //line seperator
+    container.appendChild(document.createElement("hr"));
+
+    //attributes 
+    let attributesContainer = document.createElement("div");
+    attributesContainer.id = "abilities";
+    let attributeName = document.createElement("div");
+    attributeName.className = "emphasized";
+    let attribute = document.createElement("div");
+      //Attack
+      let attackName = document.createElement("p");
+      attackName.innerHTML= "Attack";
+      attributeName.appendChild(attackName);
+      let attack = document.createElement("p");
+      attack.innerHTML= selectedInfo["Attack"];
+      attribute.appendChild(attack);
+      //Special Attack
+      let specialAttackName = document.createElement("p");
+      specialAttackName.innerHTML= "Special Attack";
+      attributeName.appendChild(specialAttackName);
+      let specialAttack = document.createElement("p");
+      specialAttack.innerHTML= selectedInfo["SpecialAttack"];
+      attribute.appendChild(specialAttack);
+      //Defense
+      let defenseName = document.createElement("p");
+      defenseName.innerHTML= "Defense";
+      attributeName.appendChild(defenseName);
+      let defense = document.createElement("p");
+      defense.innerHTML= selectedInfo["Defense"];
+      attribute.appendChild(defense);
+      //Special Defense 
+      let specialDefenseName = document.createElement("p");
+      specialDefenseName.innerHTML= "Special Defense";
+      attributeName.appendChild(specialDefenseName);
+      let specialDefense = document.createElement("p");
+      specialDefense.innerHTML= selectedInfo["SpecialDefense"];
+      attribute.appendChild(specialDefense);
+      //Speed
+      let speedName = document.createElement("p");
+      speedName.innerHTML= "Speed";
+      attributeName.appendChild(speedName);
+      let speed = document.createElement("p");
+      speed.innerHTML= selectedInfo["Speed"];
+      attribute.appendChild(speed);
+    attributesContainer.appendChild(attributeName);
+    attributesContainer.appendChild(attribute);
+    container.appendChild(attributesContainer);
+    
+    leftScreen.appendChild(container);
   }
   else {
-    // setMinAndMaxValues();
-    // if (currentFocus !== null) {
-    //     console.log(currentFocus);
-    //     document.getElementById(currentFocus).click();
-    //     // document.getElementById(currentFocus).select();
-    // }
     //render the sort & filter view 
     let leftScreen = document.getElementById('left');
     leftScreen.innerHTML = "";
@@ -356,7 +522,7 @@ function renderLeft() {
 
     //title
     let title = document.createElement("h1");
-    title.innerHTML = 'Sort & Filter';
+    title.innerHTML = 'Filter';
     sortFilter.appendChild(title);
     sortFilter.appendChild(document.createElement("br"));
 
@@ -571,7 +737,6 @@ function renderMiddle() {
   if (PokemonGalarList_Filtered.length == 0) {
     console.log("none in list")
     let row = document.createElement("div");
-    row.className = "table-row";
     row.id = "no-pokeomon"
     row.innerHTML = `<p>No Pokemon match these criteria.</p>`
     middle.appendChild(row);
@@ -582,6 +747,13 @@ function renderMiddle() {
 
       let row = document.createElement("div");
       row.className = "table-row";
+      row.addEventListener("click", function () {
+        row.id = "selectedPokemon";
+        selectPokemon(pokemon);
+      }, true);
+      if (selectPokemon == pokemon) {
+        row.id = "selectedPokemon";
+      }
 
       let name = document.createElement("div");
       name.className = "name-col";
@@ -654,11 +826,11 @@ function renderRight() {
     var spawnLocations = PokemonInfo[pokemon]["SpawnLocationNames"];
     // console.log(spawnLocations);
     spawnLocations.forEach(loc => {
-      // console.log(loc);
       var spawnChance = PokemonInfo[pokemon]["SpawnLocations"][loc]["SpawnChance"]
       if ((locationFilter == null || locationFilter == loc) &&
         spawnChance >= spawnChanceMinFilter &&
-        spawnChance <= spawnChanceMaxFilter) {
+        spawnChance <= spawnChanceMaxFilter &&
+        (selectedPokemon == null || selectedPokemon == PokemonInfo[pokemon]["Name"])) {
         var point = PokemonInfo[pokemon]["SpawnLocations"][loc]["Point"];
         // console.log(point);
         right.append("circle")
@@ -690,45 +862,6 @@ function resized() {
   hardRender();
 }
 
-function generatePointInRegion(points) {
-  // console.log(points);
-  let x1 = d3.min(points, function (d) {
-    return d[0];
-  });
-  let x2 = d3.max(points, function (d) {
-    return d[0];
-  });
-  let y1 = d3.min(points, function (d) {
-    return d[1];
-  });
-  let y2 = d3.max(points, function (d) {
-    return d[1];
-  });
-  let x = Math.floor((Math.random() * x2) + x1);
-  let y = Math.floor((Math.random() * y2) + y1) - 500;
-  // console.log(`points: ${points} \n x1: ${x1} x2: ${x2} \n y1: ${y1} y2: ${y2} \n x: ${x} y: ${y}`);
-  return [x, y];
-}
-
-
-function setMinAndMaxValues() {
-  if (PokemonGalarList_Filtered.length == 0) {
-    return;
-  }
-  let hpValues = [];
-  PokemonGalarList_Filtered.forEach(pokemon => {
-    hpValues.push(PokemonInfo[pokemon]["HP"]);
-  });
-  let newMinHP = d3.min(hpValues);
-  if (newMinHP !== undefined) {
-    MinHP = newMinHP;
-  }
-  let newMaxHP = d3.max(hpValues);
-  if (newMaxHP !== undefined) {
-    MaxHP = newMaxHP;
-  }
-}
-
 function resetFilters() {
   nameFilter = null;
   type1Filter = null;
@@ -739,7 +872,7 @@ function resetFilters() {
   hpMaxFilter = MaxHP;
   spawnChanceMinFilter = MinChance;
   spawnChanceMaxFilter = MaxChance;
-  softRender();
+  hardRender();
 }
 
 function filterResults() {
@@ -806,6 +939,34 @@ function generateFilteredPokemonList() {
 
 function displayHoverCard() {
   //@Sabrina you can put the hover card code here
+}
+
+function selectPokemon(pokemon) {
+  selectedPokemon = pokemon;
+  hardRender();
+}
+
+function getGenerationText(gen) {
+  switch (gen) {
+    case 1:
+      return "1st";
+    case 2:
+      return "2nd";
+    case 3:
+      return "3rd";
+    case 4:
+      return "4th";
+    case 5:
+      return "5th";
+    case 6:
+      return "6th";
+    case 7:
+      return "7th";
+    case 8:
+      return "8th";
+    default:
+      return "ERROR";
+  }
 }
 
 
