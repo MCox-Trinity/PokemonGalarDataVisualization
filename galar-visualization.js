@@ -183,7 +183,7 @@ TypeColors["Electric"] = "#FDE039";
 TypeColors["Psychic"] = "#F562B1";
 TypeColors["Ice"] = "#9cd1d9";
 TypeColors["Dragon"] = "#8774FF";
-TypeColors["Dark"] = "#8A6955";
+TypeColors["Dark"] = "#303030";
 TypeColors["Steel"] = "#C4C2DB";
 TypeColors["Fairy"] = "#F9AEFF";
 //#endregion
