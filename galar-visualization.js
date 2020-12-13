@@ -747,12 +747,20 @@ function renderMiddle() {
 
       let row = document.createElement("div");
       row.className = "table-row";
-      row.addEventListener("click", function () {
-        row.id = "selectedPokemon";
-        selectPokemon(pokemon);
+      //this change may only be local, fix by
+      //returning the target and checking which row it ==?
+      //then instead (of setting target's id) set that row id = selectedPokemon
+      row.addEventListener("click", function (e) {
+        e = e || window.event;
+        var target = e.target;
+
+        target.id = "selectedPokemon";
+        console.log(target);
+
+        return selectPokemon(pokemon);
       }, true);
       if (selectPokemon == pokemon) {
-        row.id = "selectedPokemon";
+        row.id = "selectedPokemon"
       }
 
       let name = document.createElement("div");
@@ -795,6 +803,8 @@ function renderRight() {
     existing.remove();
   }
 
+  hovercard = d3.select("d3-tip");
+
   right = d3.select("#right")
     .append("svg")
     .attr("id", vizID)
@@ -807,7 +817,7 @@ function renderRight() {
   var lineGenerator = d3.line();
 
   //line used to draw locations
-  var lineGenerator = d3.line();
+  // var lineGenerator = d3.line();
 
 
   locations.forEach(location => {
@@ -822,7 +832,8 @@ function renderRight() {
   });
 
   PokemonGalarList_Filtered.forEach(pokemon => {
-    var color = TypeColors[PokemonInfo[pokemon]["Type1"]];
+    var color1 = TypeColors[PokemonInfo[pokemon]["Type1"]];
+    var color2 = TypeColors[PokemonInfo[pokemon]["Type2"]]
     var spawnLocations = PokemonInfo[pokemon]["SpawnLocationNames"];
     // console.log(spawnLocations);
     spawnLocations.forEach(loc => {
@@ -833,16 +844,69 @@ function renderRight() {
         (selectedPokemon == null || selectedPokemon == PokemonInfo[pokemon]["Name"])) {
         var point = PokemonInfo[pokemon]["SpawnLocations"][loc]["Point"];
         // console.log(point);
+        
+        //Hovercard code
+        var tool_tip = d3.tip()
+          .attr("id", "d3-tip")
+          .offset(function() {
+            //checks if offpage and uh, adjusts (kindof)
+            var imgpos = [158,115];
+            if(getMousePos()[0] > (leftWidth + middleWidth + rightWidth) - 213) {
+              imgpos[1] -= (2 * 115);
+            }
+            if(getMousePos()[1] > (rightHeight - 200) && !(getMousePos()[1] > (rightHeight - 100))) {
+              imgpos[0] -= 100;
+            }
+            if(getMousePos()[1] > (rightHeight - 100)) {
+              imgpos[0] -= 158;
+            }
+            return  imgpos;
+          })
+          .html(function (d) { 
+            //return `${pokemon}</br> <p><em color="${TypeColors[PokemonInfo[pokemon]["Type1"]]}">${PokemonInfo[pokemon]["Type1"]} </em> 
+                    // ${PokemonInfo[pokemon]["Type2"]} </p></br> ${PokemonInfo[pokemon]["HP"]} HP
+                    // </br> Spawn Location </br> ${loc} </br>  ${spawnChance}% Chance`
+              return `<div>
+                        <div id="image">
+                          <img src="${PokemonInfo[pokemon]["ImageURL"]}"/>
+                        </div>
+                        <div>
+                         <h1>${pokemon}</h1>
+                        </div>
+                        <div>
+                          <p><em style="color:${color1}; font-weight: bold">${PokemonInfo[pokemon]["Type1"]}</em> <em style="color:${color2}; font-weight: bold">${PokemonInfo[pokemon]["Type2"]}</em></p> 
+                        </div>
+                        <div>
+                          <p>${PokemonInfo[pokemon]["HP"]} HP</p>
+                        </div>
+                        <div id="spawnInfo">
+                          <div>
+                            <p><em style="color:#3FB8AF">Spawn Location</em></p>
+                          </div>
+                          <div>
+                            <p style="font-weight:bold">${loc}</p>
+                          </div>
+                          <div>
+                            ${spawnChance}% Chance
+                          </div>
+                        </div>
+
+                      </div>`
+          });
+        right.call(tool_tip);
+        
+
         right.append("circle")
           .attr("r", 5)
           .attr("transform", `translate(${point[0]}, ${point[1]})`)
-          .attr("fill", color)
+          .attr("fill", color1)
           .attr("stroke", "white")
           .attr('opacity', 0.9)
-          .on('mouseover', function (d) {
-            console.log(`${pokemon} at ${loc}`);
-            displayHoverCard();
-          })
+          .on('mouseover', tool_tip.show)
+          .on('mouseout', tool_tip.hide)
+          .on('click', function(d) {
+            return selectPokemon(pokemon)
+          })          
       }
     })
   })
@@ -860,6 +924,14 @@ function resized() {
   rightWidth = rightScreen["width"];
   rightHeight = rightScreen["height"];
   hardRender();
+}
+function getMousePos() {
+  var e = e || window.event;
+
+  var mouseX = e.clientX;
+  var mousey = e.clientY;
+
+  return [mouseX, mousey];
 }
 
 function resetFilters() {
@@ -935,10 +1007,6 @@ function generateFilteredPokemonList() {
     }
   });
   PokemonGalarList_Filtered = newList;
-}
-
-function displayHoverCard() {
-  //@Sabrina you can put the hover card code here
 }
 
 function selectPokemon(pokemon) {
