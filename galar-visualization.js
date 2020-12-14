@@ -862,10 +862,7 @@ function renderRight() {
             }
             return  imgpos;
           })
-          .html(function (d) { 
-            //return `${pokemon}</br> <p><em color="${TypeColors[PokemonInfo[pokemon]["Type1"]]}">${PokemonInfo[pokemon]["Type1"]} </em> 
-                    // ${PokemonInfo[pokemon]["Type2"]} </p></br> ${PokemonInfo[pokemon]["HP"]} HP
-                    // </br> Spawn Location </br> ${loc} </br>  ${spawnChance}% Chance`
+          .html(function (d) {
               return `<div>
                         <div id="image">
                           <img src="${PokemonInfo[pokemon]["ImageURL"]}"/>
