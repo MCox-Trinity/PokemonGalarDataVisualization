@@ -137,32 +137,6 @@ let locations = [
     Name: "West Lake Axewell", Points: [[67, 449], [77, 449], [77, 464], [72, 464], [72, 473], [76, 476],
     [76, 482], [65, 482], [65, 476], [67, 474], [67, 449]]
   },
-  // {
-  //     Name: "Wyndon", Points: [[78, 60], [118, 60], [137, 83], [158, 83], [158, 135],
-  //     [148, 135], [123, 167], [73, 167], [50, 135], [38, 135],
-  //     [38, 83], [58, 83]]
-  // },
-  // { Name: "Postwick", Points: [[79.5, 605], [135, 605], [135, 581], [68.5, 581], [80, 605]] },
-
-  // { Name: "Wedgehurst", Points: [[90, 566.5], [125, 566.5], [125, 551], [90, 520], [90, 566.5]] },    
-  // {
-  //     Name: "Turffield", Points: [[66, 353], [65.5, 355], [65, 356], [64.5, 357], [64, 358], [63.5, 359],
-  //     [13, 359], [3, 353], [3, 315], [11, 315], [11, 296], [33, 296], [33, 313],
-  //     [53, 313], [55.5, 314], [57.5, 315], [59.5, 316], [61.5, 317], [62, 318],
-  //     [63, 319], [63.5, 320], [64.5, 321], [65, 322], [66, 323], [66.5, 324],
-  //     [67, 325], [67.5, 326], [68, 327], [68.5, 328], [69, 329], [69.5, 330],
-  //     [70, 331], [70, 344], [69.5, 345], [68, 350], [67.5, 352], [66, 353]]
-  // },
-  // {
-  //     Name: "Hammerlocke", Points: [[78, 306], [124, 306], [124, 290], [115, 270], [105, 270],
-  //     [105, 290], [92, 290], [92, 270], [78, 270], [78, 306]]
-  // },
-  // { Name: "Spikemuth", Points: [[172, 287], [200, 287], [200, 320], [172, 320], [172, 287]] },    
-  // {
-  //     Name: "Chirchester", Points: [[128, 238.5], [196, 238.5], [196, 215], [185, 198], [185, 190],
-  //     [196, 180], [196, 160], [185, 148], [185, 127], [159.5, 127], [159.5, 136],
-  //     [128, 238.5]]
-  // },
 ]
 
 let TypeColors = [];
@@ -195,7 +169,6 @@ var PokemonGalarList_Full = [];
 function loadData() {
   d3.csv("./galar_pokedex.csv").then(function (pokedex_data) {
     pokedex_data.forEach(pokemon => {
-      // console.log(pokemon)
       PokemonGalarList_Full.push(pokemon["NAME"]);
       PokemonInfo[pokemon["NAME"]] = {
         Name: pokemon["NAME"],
@@ -230,12 +203,11 @@ function loadData() {
           else {
             var locationList = locations.filter(x => x["Name"] == locName)
             var locZero = locationList[0]
-            // console.log(locName)
             var locChance = locInfo[1];
             locationsAndChances[locName] = {
               LocationName: locName,
               SpawnChance: locChance,
-              Point: getRandomPoint(convertPath(locZero["Points"]))
+              Point: getRandomPoint(locZero["Points"])
 
             }
             locationNames.push(locName);
@@ -282,9 +254,6 @@ var overlay = null;
 var left = null,
   right = null;
 
-//this var states if the left panel is currently displaying the detail view or the filter view
-var leftInDetailMode = false;
-
 var nameFilter = null,
   type1Filter = null,
   type2Filter = null,
@@ -299,6 +268,7 @@ var currentFocus = null;
 
 var selectedPokemon = null;
 //#endregion
+
 function convertPath(path) {
   max_x = 200
   max_y = 610
@@ -314,12 +284,9 @@ function convertPath(path) {
 function convertPoint(point) {
   max_x = 200
   max_y = 610
-  console.log(`${max_x}, ${max_y}, ${rightWidth}, ${rightHeight}`)
-  console.log(point)
   convertedPoint = []
   convertedPoint[0] = (point[0] / max_x) * rightWidth;
   convertedPoint[1] = (point[1] / max_y) * rightHeight;
-  console.log(convertedPoint)
   return convertedPoint
 }
 //functions
@@ -328,7 +295,6 @@ function render() {
   renderLeft();
   renderMiddle();
   renderRight();
-  // console.log(PokemonInfo["Magikarp"]);
 }
 
 function softRender() {
@@ -347,6 +313,7 @@ function hardRender() {
 }
 
 function renderLeft() {
+  //renders either the view for the selected pokemon or the filter panel
   if (selectedPokemon !== null) {
     //render the detail view for the selected pokemon 
     let leftScreen = document.getElementById('left');
@@ -640,7 +607,6 @@ function renderLeft() {
     genSection.id = "gen";
     for (var i = 1; i <= 8; i++) {
       let genBox = document.createElement('table');
-      // console.log(generationFilter.includes(i))
       genBox.innerHTML =
         `<tr>
                 <td class="verticalCheckbox">
@@ -754,7 +720,6 @@ function renderMiddle() {
   //#endregion
 
   if (PokemonGalarList_Filtered.length == 0) {
-    console.log("none in list")
     let row = document.createElement("div");
     row.id = "no-pokeomon"
     row.innerHTML = `<p>No Pokemon match these criteria.</p>`
@@ -769,15 +734,12 @@ function renderMiddle() {
 
       row.addEventListener("click", function () {
         row.id = "selectedPokemon";
-        // console.log(row);
 
         return selectPokemon(pokemon);
       }, true);
       if (selectedPokemon == pokemon) {
-        console.log("moo");
         row.id = "selectedPokemon"
       }
-      console.log(row);
       
       let name = document.createElement("div");
       name.className = "name-col";
@@ -851,7 +813,6 @@ function renderRight() {
     var color1 = TypeColors[PokemonInfo[pokemon]["Type1"]];
     var color2 = TypeColors[PokemonInfo[pokemon]["Type2"]]
     var spawnLocations = PokemonInfo[pokemon]["SpawnLocationNames"];
-    // console.log(spawnLocations);
     spawnLocations.forEach(loc => {
       var spawnChance = PokemonInfo[pokemon]["SpawnLocations"][loc]["SpawnChance"]
       if ((locationFilter == null || locationFilter == loc) &&
@@ -859,8 +820,7 @@ function renderRight() {
         spawnChance <= spawnChanceMaxFilter &&
         (selectedPokemon == null || selectedPokemon == PokemonInfo[pokemon]["Name"])) {
 
-        var point = getRandomPoint(convertPath(locations.filter(x => x["Name"] == loc)[0]["Points"]));
-        // console.log(point);
+        var point = convertPoint(PokemonInfo[pokemon]["SpawnLocations"][loc]["Point"]);
 
         //Hovercard code
         var tool_tip = d3.tip()
@@ -915,7 +875,7 @@ function renderRight() {
           .attr("transform", `translate(${point[0]}, ${point[1]})`)
           .attr("fill", color1)
           .attr("stroke", "white")
-          .attr('opacity', 0.9)
+          .attr('opacity', 0.8)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide)
           .on('click', function (d) {
@@ -987,8 +947,6 @@ function filterResults() {
     }
   }
   generationFilter = generationsField;
-  // console.log(generationsField);
-  // console.log(generationFilter);
 
   //hp
   var hpField = document.getElementById("HP").noUiSlider.get();
@@ -1006,8 +964,6 @@ function generateFilteredPokemonList() {
   var newList = [];
   PokemonGalarList_Full.forEach(pokemon => {
     var pokemonData = PokemonInfo[pokemon];
-    // console.log(`canSpawnAtRate: ${canSpawnAtRate(pokemon)}`)
-    // console.log(`Pokemon: ${pokemonData["Name"]} \n Filter: ${locationFilter} \n  Spawn Locations: ${pokemonData["SpawnLocationNames"]} \n Result: ${pokemonData["SpawnLocationNames"].includes(locationFilter)}`);
     if (
       (nameFilter == null || pokemonData["Name"].toLowerCase().includes(nameFilter.toLowerCase())) &&
       (type1Filter == null || pokemonData["Type1"] == type1Filter) &&
@@ -1053,12 +1009,12 @@ function getGenerationText(gen) {
 
 
 //#region Create Points
+//code largely taken from https://github.com/mapbox/earcut
 //generate random triangle
 function getRandomPoint(shape) {
   triangles = triangulate(shape)
   selectTriangle = selectRandomTriangle(triangles)
   point = calcRandomPoint(selectTriangle)
-  // console.log("mq" + point)
   return point
   function triangulate(points) {
     const earcut = createEarcut();
@@ -1872,7 +1828,7 @@ function getRandomPoint(shape) {
 window.onload = () => {
   loadData();
   resized();
-  setTimeout(() => finishedRendering(), 3000);
+  setTimeout(() => finishedRendering(), 2000);
 }
 
 function finishedRendering() {
