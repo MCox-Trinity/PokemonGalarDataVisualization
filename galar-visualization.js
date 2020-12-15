@@ -237,7 +237,7 @@ function loadData() {
           locationsAndChances[locName] = {
             LocationName: locName,
             SpawnChance: locChance,
-            Point: getRandomPoint(locZero["Points"])
+            Point: getRandomPoint(convertPath(locZero["Points"]))
 
           }
           locationNames.push(locName);
@@ -302,7 +302,29 @@ var currentFocus = null;
 
 var selectedPokemon = null;
 //#endregion
-
+function convertPath (path){
+  max_x = 200
+  max_y = 610
+  convertedPath =[]
+  path.forEach(function (elem){
+    newPath = []
+    newPath[0] = (elem[0]/max_x)*rightWidth;
+    newPath[1] = (elem[1]/max_y)*rightHeight;
+    convertedPath.push(newPath)
+  })
+  return convertedPath
+}
+function convertPoint (point){
+  max_x = 200
+  max_y = 610
+  console.log(`${max_x}, ${max_y}, ${rightWidth}, ${rightHeight}`)
+  console.log(point)
+  convertedPoint=[]
+    convertedPoint[0] = (point[0]/max_x)*rightWidth;
+    convertedPoint[1] = (point[1]/max_y)*rightHeight;
+  console.log(convertedPoint)
+  return convertedPoint
+}
 //functions
 function render() {
   generateFilteredPokemonList();
@@ -822,7 +844,7 @@ function renderRight() {
 
   locations.forEach(location => {
     //creating area "drawings"
-    var loc = lineGenerator(location["Points"])
+    var loc = lineGenerator(convertPath(location["Points"]))
     right.append("path")
       .attr('d', loc)
       .attr('fill', "none")
@@ -842,7 +864,8 @@ function renderRight() {
         spawnChance >= spawnChanceMinFilter &&
         spawnChance <= spawnChanceMaxFilter &&
         (selectedPokemon == null || selectedPokemon == PokemonInfo[pokemon]["Name"])) {
-        var point = PokemonInfo[pokemon]["SpawnLocations"][loc]["Point"];
+        console.log(locations.filter(x => x["Name"] == loc)[0]["Points"])
+        var point = getRandomPoint(convertPath(locations.filter(x => x["Name"] == loc)[0]["Points"]));
         // console.log(point);
         
         //Hovercard code
