@@ -215,52 +215,49 @@ function loadData() {
         Gen: +pokemon["GENERATION"]
       }
     });
-    // console.log(PokemonInfo);
-  })
-  d3.csv("./galar_locations.csv").then(function (location_data) {
-    location_data.forEach(pokemon => {
-      var locs = pokemon["LOCATIONS"].split("!");
-      var locationsAndChances = [];
-      var locationNames = [];
-      var locationChances = [];
-      locs.forEach(loc => {
-        var locInfo = loc.split(":");
-        var locName = locInfo[0];
-        if (locName == "") {
-          //null location
-        }
-        else {
-          var locationList = locations.filter(x => x["Name"] == locName)
-          var locZero = locationList[0]
-          // console.log(locName)
-          var locChance = locInfo[1];
-          locationsAndChances[locName] = {
-            LocationName: locName,
-            SpawnChance: locChance,
-            Point: getRandomPoint(convertPath(locZero["Points"]))
-
+    d3.csv("./galar_locations.csv").then(function (location_data) {
+      location_data.forEach(pokemon => {
+        var locs = pokemon["LOCATIONS"].split("!");
+        var locationsAndChances = [];
+        var locationNames = [];
+        var locationChances = [];
+        locs.forEach(loc => {
+          var locInfo = loc.split(":");
+          var locName = locInfo[0];
+          if (locName == "") {
+            //null location
           }
-          locationNames.push(locName);
-          locationChances.push(locChance);
-        }
-      });
-      PokemonInfo[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
-      PokemonInfo[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
-      PokemonInfo[pokemon["NAME"]]["SpawnLocationChances"] = locationChances;
+          else {
+            var locationList = locations.filter(x => x["Name"] == locName)
+            var locZero = locationList[0]
+            // console.log(locName)
+            var locChance = locInfo[1];
+            locationsAndChances[locName] = {
+              LocationName: locName,
+              SpawnChance: locChance,
+              Point: getRandomPoint(convertPath(locZero["Points"]))
 
-    })
-  });
-  d3.csv("./galar_images.csv").then(function (location_data) {
-    location_data.forEach(pokemon => {
-      var name = pokemon["NAME"];
-      var image = pokemon["IMAGE-URL"];
-      PokemonInfo[name]["ImageURL"] = image;
-    })
+            }
+            locationNames.push(locName);
+            locationChances.push(locChance);
+          }
+        });
+        PokemonInfo[pokemon["NAME"]]["SpawnLocations"] = locationsAndChances;
+        PokemonInfo[pokemon["NAME"]]["SpawnLocationNames"] = locationNames;
+        PokemonInfo[pokemon["NAME"]]["SpawnLocationChances"] = locationChances;
+        d3.csv("./galar_images.csv").then(function (location_data) {
+          location_data.forEach(pokemon => {
+            var name = pokemon["NAME"];
+            var image = pokemon["IMAGE-URL"];
+            PokemonInfo[name]["ImageURL"] = image;
+          })
+        })
+        PokemonGalarList_Filtered = PokemonGalarList_Full;
+      })
+    });
   })
-  // console.log(PokemonInfo)
-  PokemonGalarList_Filtered = PokemonGalarList_Full;
-  // setMinAndMaxValues();
-  resized();
+
+
 }
 
 //#region global variables
@@ -302,26 +299,26 @@ var currentFocus = null;
 
 var selectedPokemon = null;
 //#endregion
-function convertPath (path){
+function convertPath(path) {
   max_x = 200
   max_y = 610
-  convertedPath =[]
-  path.forEach(function (elem){
+  convertedPath = []
+  path.forEach(function (elem) {
     newPath = []
-    newPath[0] = (elem[0]/max_x)*rightWidth;
-    newPath[1] = (elem[1]/max_y)*rightHeight;
+    newPath[0] = (elem[0] / max_x) * rightWidth;
+    newPath[1] = (elem[1] / max_y) * rightHeight;
     convertedPath.push(newPath)
   })
   return convertedPath
 }
-function convertPoint (point){
+function convertPoint(point) {
   max_x = 200
   max_y = 610
   console.log(`${max_x}, ${max_y}, ${rightWidth}, ${rightHeight}`)
   console.log(point)
-  convertedPoint=[]
-    convertedPoint[0] = (point[0]/max_x)*rightWidth;
-    convertedPoint[1] = (point[1]/max_y)*rightHeight;
+  convertedPoint = []
+  convertedPoint[0] = (point[0] / max_x) * rightWidth;
+  convertedPoint[1] = (point[1] / max_y) * rightHeight;
   console.log(convertedPoint)
   return convertedPoint
 }
@@ -494,45 +491,45 @@ function renderLeft() {
     let attributeName = document.createElement("div");
     attributeName.className = "emphasized";
     let attribute = document.createElement("div");
-      //Attack
-      let attackName = document.createElement("p");
-      attackName.innerHTML= "Attack";
-      attributeName.appendChild(attackName);
-      let attack = document.createElement("p");
-      attack.innerHTML= selectedInfo["Attack"];
-      attribute.appendChild(attack);
-      //Special Attack
-      let specialAttackName = document.createElement("p");
-      specialAttackName.innerHTML= "Special Attack";
-      attributeName.appendChild(specialAttackName);
-      let specialAttack = document.createElement("p");
-      specialAttack.innerHTML= selectedInfo["SpecialAttack"];
-      attribute.appendChild(specialAttack);
-      //Defense
-      let defenseName = document.createElement("p");
-      defenseName.innerHTML= "Defense";
-      attributeName.appendChild(defenseName);
-      let defense = document.createElement("p");
-      defense.innerHTML= selectedInfo["Defense"];
-      attribute.appendChild(defense);
-      //Special Defense 
-      let specialDefenseName = document.createElement("p");
-      specialDefenseName.innerHTML= "Special Defense";
-      attributeName.appendChild(specialDefenseName);
-      let specialDefense = document.createElement("p");
-      specialDefense.innerHTML= selectedInfo["SpecialDefense"];
-      attribute.appendChild(specialDefense);
-      //Speed
-      let speedName = document.createElement("p");
-      speedName.innerHTML= "Speed";
-      attributeName.appendChild(speedName);
-      let speed = document.createElement("p");
-      speed.innerHTML= selectedInfo["Speed"];
-      attribute.appendChild(speed);
+    //Attack
+    let attackName = document.createElement("p");
+    attackName.innerHTML = "Attack";
+    attributeName.appendChild(attackName);
+    let attack = document.createElement("p");
+    attack.innerHTML = selectedInfo["Attack"];
+    attribute.appendChild(attack);
+    //Special Attack
+    let specialAttackName = document.createElement("p");
+    specialAttackName.innerHTML = "Special Attack";
+    attributeName.appendChild(specialAttackName);
+    let specialAttack = document.createElement("p");
+    specialAttack.innerHTML = selectedInfo["SpecialAttack"];
+    attribute.appendChild(specialAttack);
+    //Defense
+    let defenseName = document.createElement("p");
+    defenseName.innerHTML = "Defense";
+    attributeName.appendChild(defenseName);
+    let defense = document.createElement("p");
+    defense.innerHTML = selectedInfo["Defense"];
+    attribute.appendChild(defense);
+    //Special Defense 
+    let specialDefenseName = document.createElement("p");
+    specialDefenseName.innerHTML = "Special Defense";
+    attributeName.appendChild(specialDefenseName);
+    let specialDefense = document.createElement("p");
+    specialDefense.innerHTML = selectedInfo["SpecialDefense"];
+    attribute.appendChild(specialDefense);
+    //Speed
+    let speedName = document.createElement("p");
+    speedName.innerHTML = "Speed";
+    attributeName.appendChild(speedName);
+    let speed = document.createElement("p");
+    speed.innerHTML = selectedInfo["Speed"];
+    attribute.appendChild(speed);
     attributesContainer.appendChild(attributeName);
     attributesContainer.appendChild(attribute);
     container.appendChild(attributesContainer);
-    
+
     leftScreen.appendChild(container);
   }
   else {
@@ -867,26 +864,26 @@ function renderRight() {
         console.log(locations.filter(x => x["Name"] == loc)[0]["Points"])
         var point = getRandomPoint(convertPath(locations.filter(x => x["Name"] == loc)[0]["Points"]));
         // console.log(point);
-        
+
         //Hovercard code
         var tool_tip = d3.tip()
           .attr("id", "d3-tip")
-          .offset(function() {
+          .offset(function () {
             //checks if offpage and uh, adjusts (kindof)
-            var imgpos = [158,115];
-            if(getMousePos()[0] > (leftWidth + middleWidth + rightWidth) - 213) {
+            var imgpos = [158, 115];
+            if (getMousePos()[0] > (leftWidth + middleWidth + rightWidth) - 213) {
               imgpos[1] -= (2 * 115);
             }
-            if(getMousePos()[1] > (rightHeight - 200) && !(getMousePos()[1] > (rightHeight - 100))) {
+            if (getMousePos()[1] > (rightHeight - 200) && !(getMousePos()[1] > (rightHeight - 100))) {
               imgpos[0] -= 100;
             }
-            if(getMousePos()[1] > (rightHeight - 100)) {
+            if (getMousePos()[1] > (rightHeight - 100)) {
               imgpos[0] -= 158;
             }
-            return  imgpos;
+            return imgpos;
           })
           .html(function (d) {
-              return `<div id="poke-tooltip">
+            return `<div id="poke-tooltip">
                         <div id="image">
                           <img src="${PokemonInfo[pokemon]["ImageURL"]}"/>
                         </div>
@@ -914,7 +911,7 @@ function renderRight() {
                       </div>`
           });
         right.call(tool_tip);
-        
+
 
         right.append("circle")
           .attr("r", 5)
@@ -924,9 +921,9 @@ function renderRight() {
           .attr('opacity', 0.9)
           .on('mouseover', tool_tip.show)
           .on('mouseout', tool_tip.hide)
-          .on('click', function(d) {
+          .on('click', function (d) {
             return selectPokemon(pokemon)
-          })          
+          })
       }
     })
   })
@@ -1877,4 +1874,12 @@ function getRandomPoint(shape) {
 //does the initial rendering of the visualization
 window.onload = () => {
   loadData();
+  resized();
+  setTimeout(() => finishedRendering(), 3000);
+}
+
+function finishedRendering() {
+  resized();
+  var loading = document.getElementById("loading");
+  loading.style.setProperty('visibility', 'hidden');
 }
