@@ -766,22 +766,19 @@ function renderMiddle() {
 
       let row = document.createElement("div");
       row.className = "table-row";
-      //this change may only be local, fix by
-      //returning the target and checking which row it ==?
-      //then instead (of setting target's id) set that row id = selectedPokemon
-      row.addEventListener("click", function (e) {
-        e = e || window.event;
-        var target = e.target;
 
-        target.id = "selectedPokemon";
-        console.log(target);
+      row.addEventListener("click", function () {
+        row.id = "selectedPokemon";
+        // console.log(row);
 
         return selectPokemon(pokemon);
       }, true);
-      if (selectPokemon == pokemon) {
+      if (selectedPokemon == pokemon) {
+        console.log("moo");
         row.id = "selectedPokemon"
       }
-
+      console.log(row);
+      
       let name = document.createElement("div");
       name.className = "name-col";
       name.innerHTML = `<p>${pokemonData["Name"]}</p>`;
@@ -861,7 +858,7 @@ function renderRight() {
         spawnChance >= spawnChanceMinFilter &&
         spawnChance <= spawnChanceMaxFilter &&
         (selectedPokemon == null || selectedPokemon == PokemonInfo[pokemon]["Name"])) {
-        console.log(locations.filter(x => x["Name"] == loc)[0]["Points"])
+
         var point = getRandomPoint(convertPath(locations.filter(x => x["Name"] == loc)[0]["Points"]));
         // console.log(point);
 

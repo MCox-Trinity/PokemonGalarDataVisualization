@@ -169,8 +169,8 @@ body{
     background-color: #edfaff;
 }
 
-#table-contents .table-row .selectedPokemon {
-    background-color: red !important;
+#table-contents .table-row#selectedPokemon {
+    background-color: #f5ffed !important;
 }
 
 div.name-col {
