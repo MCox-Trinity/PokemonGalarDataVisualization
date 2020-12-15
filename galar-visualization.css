@@ -1,3 +1,6 @@
+body{
+    overflow: hidden !important;
+}
 #visualization {
     max-width: 100vw;
     max-height: 100vh;
@@ -7,7 +10,7 @@
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 #resizable {
@@ -295,12 +298,12 @@ button#filter-reset:hover {
     font-weight: bold;
 }
 
-#d3-tip {
+#d3-tip #poke-tooltip{
     line-height: 1.5em;
     text-align: center;
     font-family: 'Raleway', sans-serif;
     padding: 1em;
-    width: 0em;
+    width: 12em;
     background: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #000000;

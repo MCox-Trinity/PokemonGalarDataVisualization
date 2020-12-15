@@ -886,7 +886,7 @@ function renderRight() {
             return  imgpos;
           })
           .html(function (d) {
-              return `<div>
+              return `<div id="poke-tooltip">
                         <div id="image">
                           <img src="${PokemonInfo[pokemon]["ImageURL"]}"/>
                         </div>
