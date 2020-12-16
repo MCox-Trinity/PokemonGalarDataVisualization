@@ -348,3 +348,8 @@ button#filter-reset:hover {
 #info-button img{
     width: 1.5em;
 }
+
+#info-button:hover {
+    opacity: 0.5;
+    transition: opacity .5s;
+}
