@@ -506,6 +506,15 @@ function renderLeft() {
     let sortFilter = document.createElement('div');
     sortFilter.className = "sortFilter";
 
+    //info button
+    let infoButton = document.createElement("a");
+    infoButton.id = "info-button";
+    infoButton.href = "galardex-homepage.html";
+    let infoImage = document.createElement("img");
+    infoImage.src = "https://img.icons8.com/flat_round/64/000000/info.png";
+    infoButton.appendChild(infoImage);
+    sortFilter.appendChild(infoButton);
+
     //title
     let title = document.createElement("h1");
     title.innerHTML = 'Filter';
@@ -1828,7 +1837,7 @@ function getRandomPoint(shape) {
 window.onload = () => {
   loadData();
   resized();
-  setTimeout(() => finishedRendering(), 2000);
+  setTimeout(() => finishedRendering(), 1000);
 }
 
 function finishedRendering() {
